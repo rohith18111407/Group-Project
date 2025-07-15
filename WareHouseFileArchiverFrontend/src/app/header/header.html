@@ -1,0 +1,33 @@
+<nav class="navbar navbar-expand-lg navbar-dark" [ngClass]="isInAdmin() ? 'bg-danger' : 'bg-primary'">
+  <div class="container">
+    <a class="navbar-brand" routerLink="/">
+      <i class="bi bi-archive"></i> WareHouse File Archiver
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <ng-container *ngIf="inProtectedDashboard(); else guestLinks">
+          <li class="nav-item">
+            <a class="nav-link text-white" (click)="logout()">Logout</a>
+          </li>
+        </ng-container>
+
+        <ng-template #guestLinks>
+          <li class="nav-item" *ngIf="!isLoggedIn">
+            <a class="nav-link text-white" routerLink="/login">Login</a>
+          </li>
+          <li class="nav-item" *ngIf="!isLoggedIn">
+            <a class="nav-link text-white" routerLink="/signup">Signup</a>
+          </li>
+          <li class="nav-item" *ngIf="isLoggedIn">
+            <a class="nav-link text-white" (click)="logout()">Logout</a>
+          </li>
+        </ng-template>
+      </ul>
+    </div>
+  </div>
+</nav>

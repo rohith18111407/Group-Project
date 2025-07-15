@@ -1,0 +1,7 @@
+.card {
+  border-left: 4px solid var(--bs-primary);
+  transition: transform 0.2s;
+}
+.card:hover {
+  transform: scale(1.02);
+}

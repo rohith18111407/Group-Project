@@ -1,0 +1,22 @@
+# Build outputs
+**/bin/
+**/obj/
+**/publish/
+**/TestResults/
+
+# User secrets
+**/client_secret_*.json
+**/appsettings.json
+**/appsettings.*.json
+*.user
+*.suo
+**/bin/Debug/net9.0/ArchiveFiles/
+**/bin/Debug/net9.0/ArchiveFiles/
+
+# Rider and VS Code settings
+.idea/
+.vscode/
+
+# OS generated files
+.DS_Store
+Thumbs.db

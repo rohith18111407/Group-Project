@@ -1,0 +1,60 @@
+<form [formGroup]="fileForm" (ngSubmit)="submit()">
+  <div class="mb-3">
+    <label class="form-label">File *</label>
+    <input type="file" class="form-control" (change)="onFileChange($event)" />
+    <div class="text-danger small" *ngIf="fileForm.get('file')?.touched && fileForm.get('file')?.invalid">
+      File is required.
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Item Name *</label>
+    <select class="form-select" formControlName="itemName" (change)="onItemNameChange()">
+      <option value="" disabled>Select an item</option>
+      @for (name of itemNames; track name) {
+        <option [value]="name">{{ name }}</option>
+      }
+    </select>
+    <div class="text-danger small" *ngIf="fileForm.get('itemName')?.touched && fileForm.get('itemName')?.invalid">
+      Item name is required.
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Item Category *</label>
+    <select class="form-select" formControlName="itemCategory">
+      <option value="" disabled>Select a category</option>
+      @for (cat of filteredCategories; track cat) {
+        <option [value]="cat">{{ cat }}</option>
+      }
+    </select>
+    <div class="text-danger small" *ngIf="fileForm.get('itemCategory')?.touched && fileForm.get('itemCategory')?.invalid">
+      Item category is required.
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">File Category *</label>
+    <select class="form-select" formControlName="category">
+      @for (option of categoryOptions; track option) {
+        <option [value]="option">{{ option }}</option>
+      }
+    </select>
+    <div class="text-danger small" *ngIf="fileForm.get('category')?.touched && fileForm.get('category')?.invalid">
+      File category is required.
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label class="form-label">Description *</label>
+    <textarea class="form-control" formControlName="description" rows="2"></textarea>
+    <div class="text-danger small" *ngIf="fileForm.get('description')?.touched && fileForm.get('description')?.invalid">
+      Description is required.
+    </div>
+  </div>
+
+  <div class="d-flex gap-2">
+    <button type="submit" class="btn btn-danger" [disabled]="fileForm.invalid">Upload</button>
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+  </div>
+</form>

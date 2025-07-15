@@ -1,0 +1,51 @@
+.dashboard-layout {
+  display: grid;
+  grid-template-columns: 190px 1fr 280px;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+}
+
+/* Tablet Layout (Right → Left + Center) */
+@media (max-width: 992px) {
+  .dashboard-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  app-staff-right-sidebar {
+    order: 1;
+    align-self: center;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  app-staff-left-sidebar {
+    order: 2;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  app-staff-center-content {
+    order: 3;
+    width: 100%;
+  }
+}
+
+/* Mobile layout – same order, tighter padding */
+@media (max-width: 768px) {
+  .dashboard-layout {
+    padding: 0.5rem;
+  }
+
+  app-staff-right-sidebar {
+    max-width: 100%;
+  }
+
+  app-staff-left-sidebar {
+    justify-content: center;
+  }
+}

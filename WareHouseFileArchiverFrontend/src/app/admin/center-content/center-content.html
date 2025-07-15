@@ -1,0 +1,263 @@
+@if (view === 'items') {
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h5>All Items</h5>
+    <button class="btn btn-success" (click)="toggleAddItemForm(true)">
+        <i class="bi bi-plus-circle"></i> Add Item
+    </button>
+</div>
+
+<!-- 🔍 Item Search Input -->
+<div class="mb-3">
+    <input type="text" class="form-control w-50" placeholder="Search by name or category"
+        (input)="onItemSearchChange($event)" />
+</div>
+
+<div class="d-flex gap-2 mb-3 flex-wrap">
+
+    <button class="btn btn-outline-secondary btn-sm" (click)="changeSort('createdAt')">
+        Sort by Time
+        <i class="bi" [class.bi-sort-down]="!isDescending" [class.bi-sort-up]="isDescending"
+            *ngIf="sortBy === 'createdAt'"></i>
+    </button>
+    <button class="btn btn-outline-secondary btn-sm" (click)="changeSort('createdBy')">
+        Sort by Creator
+        <i class="bi" [class.bi-sort-down]="!isDescending" [class.bi-sort-up]="isDescending"
+            *ngIf="sortBy === 'createdBy'"></i>
+    </button>
+    <button class="btn btn-outline-secondary btn-sm" (click)="changeSort('name')">
+        Sort by Name
+        <i class="bi" [class.bi-sort-down]="!isDescending" [class.bi-sort-up]="isDescending"
+            *ngIf="sortBy === 'name'"></i>
+    </button>
+</div>
+
+@if (showEditItemForm) {
+<app-edit-item [item]="selectedItemToEdit" (cancel)="showEditItemForm = false" (itemUpdated)="onItemUpdated()">
+</app-edit-item>
+}
+
+
+@if (showAddItemForm) {
+<app-add-item (cancel)="toggleAddItemForm(false)" (itemCreated)="onItemCreated()"></app-add-item>
+}
+
+@if (loading) {
+<div class="text-center">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+} @else if (error) {
+<div class="alert alert-danger text-center">{{ error }}</div>
+} @else if (items.length === 0) {
+<div class="alert alert-info text-center">No items found.</div>
+} @else {
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Name</th>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Created At</th>
+                <th>Created By</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of filteredItems; track item.id) {
+            <tr>
+                <td>{{ item.name }}</td>
+                <td>{{ item.categories?.join(', ') }}</td>
+                <td>{{ item.description || '-' }}</td>
+                <td>{{ item.createdAt | date: 'short' }}</td>
+                <td>{{ item.createdBy || '-' }}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning me-1" (click)="toggleEditItemForm(item)">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" (click)="confirmDelete(item.id)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}
+}
+
+
+
+@if (view === 'users') {
+<div class="d-flex justify-content-between align-items-center mb-3 gap-3 flex-wrap">
+    <h5 class="mb-0">All Users</h5>
+
+    <input type="text" class="form-control w-50" placeholder="Search by username"
+        (input)="onUserSearchChange($event)" />
+
+    <select class="form-select w-auto" (change)="onRoleFilterChange($event)">
+        <option value="">All Roles</option>
+        <option value="Admin">Admin</option>
+        <option value="Staff">Staff</option>
+    </select>
+</div>
+
+@if (showEditUserForm) {
+<app-edit-user [user]="selectedUserToEdit" (cancel)="showEditUserForm = false" (userUpdated)="onUserUpdated()">
+</app-edit-user>
+}
+
+
+@if (showAddUserForm) {
+<app-add-user (cancel)="toggleAddUserForm(false)" (userCreated)="onUserCreated()"></app-add-user>
+}
+
+<div class="mb-2">
+    <button class="btn btn-success" (click)="toggleAddUserForm(true)">
+        <i class="bi bi-plus-circle"></i> Add User
+    </button>
+</div>
+
+@if (loading) {
+<div class="text-center">
+    <div class="spinner-border text-primary" role="status"></div>
+</div>
+} @else if (error) {
+<div class="alert alert-danger text-center">{{ error }}</div>
+} @else if (filteredUsers.length === 0) {
+<div class="alert alert-info text-center">No matching users found.</div>
+} @else {
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <thead class="table-light">
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Roles</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (user of filteredUsers; track user.id) {
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.roles?.join(', ') }}</td>
+                <td>
+                    <button class="btn btn-sm btn-warning me-1" (click)="toggleEditUserForm(user)">
+                        <i class="bi bi-pencil"></i>
+                    </button>
+                    <button class="btn btn-sm btn-danger" (click)="confirmDeleteUser(user.id)">
+                        <i class="bi bi-trash"></i>
+                    </button>
+                </td>
+
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+}
+}
+
+@if (view === 'files') {
+<div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <h5 class="mb-0">All Files</h5>
+
+    <input type="text" class="form-control w-50" placeholder="Search filename, item, category"
+        (input)="onFileSearchChange($event)" />
+
+    <button class="btn btn-outline-secondary btn-sm" (click)="changeFileSortOrder()">
+        Sort by Time
+        <i class="bi" [class.bi-sort-down]="!fileSortDescending" [class.bi-sort-up]="fileSortDescending"></i>
+    </button>
+</div>
+
+<div class="mb-2">
+    <button class="btn btn-success" (click)="toggleAddFileForm(true)">
+        <i class="bi bi-cloud-upload"></i> Upload File
+    </button>
+</div>
+
+@if (showAddFileForm) {
+<app-add-file (fileUploaded)="onFileUploaded()" (cancel)="toggleAddFileForm(false)"></app-add-file>
+}
+
+
+
+@if (loading) {
+<div class="text-center">
+    <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+    </div>
+</div>
+} @else if (error) {
+<div class="alert alert-danger text-center">{{ error }}</div>
+} @else if (files.length === 0) {
+<div class="alert alert-info text-center">No files found.</div>
+} @else {
+<div class="table-responsive">
+    <table class="table table-striped table-hover">
+        <tbody>
+            @for (category of groupedFileCategories; track category) {
+            <h6 class="mt-4">{{ category }}</h6>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>File Name</th>
+                            <th>Item Name</th>
+                            <th>Version</th>
+                            <th>Size</th>
+                            <th>Created By</th>
+                            <th>Created At</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (file of groupedFiles[category]; track file.id) {
+                        <tr>
+                            <td>{{ file.fileName }}{{ file.fileExtension }}</td>
+                            <td>{{ file.itemName }}</td>
+                            <td>{{ file.versionNumber }}</td>
+                            <td>{{ getFormattedSize(file.fileSizeInBytes) }}</td>
+                            <td>{{ file.createdBy }}</td>
+                            <td>{{ file.createdAt | date: 'short' }}</td>
+                            <td>
+                                <button class="btn btn-sm btn-success me-1" (click)="onDownloadFile(file)">
+                                    <i class="bi bi-download"></i>
+                                </button>
+
+                                <button class="btn btn-sm btn-danger" (click)="confirmDeleteFile(file.id)">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            }
+
+        </tbody>
+    </table>
+</div>
+}
+}
+
+
+
+
+
+
+@if (view === 'dashboard') {
+<app-dashboard></app-dashboard>
+}
+
+@if (view === 'statistics') {
+  <app-statistics></app-statistics>
+}

@@ -1,0 +1,5 @@
+<div class="dashboard-layout">
+    <app-staff-left-sidebar (viewChange)="setView($event)"></app-staff-left-sidebar>
+    <app-staff-center-content [view]="selectedView"></app-staff-center-content>
+    <app-staff-right-sidebar></app-staff-right-sidebar>
+</div>

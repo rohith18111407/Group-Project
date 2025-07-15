@@ -1,0 +1,64 @@
+/* center-content.css */
+.center-container {
+  padding: 1rem;
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: #333;
+}
+
+.upload-list, .file-list, .item-list, .user-list {
+  list-style: none;
+  padding: 0;
+}
+
+.upload-list li, .file-list li, .item-list li, .user-list li {
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.upload-list li:hover, .file-list li:hover, .item-list li:hover, .user-list li:hover {
+  background: #f8f9fa;
+}
+
+.action-btn {
+  border: none;
+  background: transparent;
+  color: #dc3545;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.action-btn:hover {
+  color: #a71d2a;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.section-header button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.section-header button:hover {
+  background-color: #0056b3;
+}

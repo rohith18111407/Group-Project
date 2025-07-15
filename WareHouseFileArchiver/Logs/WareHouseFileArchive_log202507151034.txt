@@ -1,0 +1,10 @@
+2025-07-15 10:34:49.835 +05:30 [INF] User profile is available. Using '/Users/presidio/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-07-15 10:34:50.054 +05:30 [INF] Now listening on: http://localhost:5239
+2025-07-15 10:34:50.057 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-15 10:34:50.057 +05:30 [INF] Hosting environment: Development
+2025-07-15 10:34:50.057 +05:30 [INF] Content root path: /Users/presidio/Desktop/Day 25/WareHouseFileArchiver
+2025-07-15 10:34:52.074 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/ - null null
+2025-07-15 10:34:52.260 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/ - 404 0 null 186.8988ms
+2025-07-15 10:34:52.320 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5239/, Response status code: 404
+2025-07-15 10:34:55.210 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/swagger/v1/swagger.json - null null
+2025-07-15 10:34:55.383 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 173.2972ms

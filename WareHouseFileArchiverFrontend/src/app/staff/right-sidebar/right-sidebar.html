@@ -1,0 +1,67 @@
+<div class="right-sidebar">
+  @if (loading) {
+  <div class="text-center text-muted py-4">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  } @else if (error) {
+  <div class="alert alert-danger text-center">{{ error }}</div>
+  } @else {
+  <div class="profile-card shadow-lg p-4 text-center position-relative">
+    <div class="position-absolute top-0 end-0 p-2">
+      <button class="btn btn-outline-secondary position-relative" (click)="toggleNotifications()">
+        <i class="bi bi-bell"></i>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+          *ngIf="(unreadCount$ | async) as count">
+          {{ count }}
+        </span>
+
+      </button>
+    </div>
+
+    <h5 class="fw-bold text-dark mb-1">
+      <i class="bi bi-person-circle me-1 large-icon"></i> {{ user?.userName }}
+    </h5>
+    <p class="text-muted small mb-1">
+      <i class="bi bi-envelope me-1"></i> {{ user?.email }}
+    </p>
+    <span class="badge bg-gradient-primary role-badge mb-3 d-inline-block">
+      <i class="bi bi-shield-lock me-1"></i> {{ user?.roles?.[0] }}
+    </span>
+
+    <button class="btn btn-outline-danger btn-sm w-100 mt-2" (click)="logout()">
+      <i class="bi bi-box-arrow-right me-1"></i> Logout
+    </button>
+  </div>
+
+  @if (showNotifications) {
+  <div class="mt-2 p-2 border bg-light shadow-sm rounded">
+    <div class="d-flex justify-content-between align-items-center mb-2">
+      <h6 class="fw-bold mb-0">
+        <i class="bi bi-bell-fill me-1"></i> Notifications
+      </h6>
+      <button class="btn btn-sm btn-outline-danger" (click)="clearNotifications()">
+        <i class="bi bi-x-circle"></i> Clear
+      </button>
+    </div>
+
+    <ul class="list-group small">
+      @for (note of notifications$ | async; track note.id) {
+      <li class="list-group-item">
+        <strong>{{ note.action }}</strong><br />
+        <i class="bi bi-file-earmark"></i> <strong>File:</strong> {{ note.fileName }}{{ note.fileExtension }}<br />
+        <i class="bi bi-box"></i> <strong>Item:</strong> {{ note.itemName || '-' }}<br />
+        <i class="bi bi-tags"></i> <strong>Item Category:</strong> {{ note.itemCategoryLabel || '-' }}<br />
+        <i class="bi bi-archive"></i> <strong>File Category:</strong> {{ note.fileCategoryLabel || '-' }}<br />
+        <i class="bi bi-hash"></i> <strong>Version:</strong> {{ note.versionNumber }}<br />
+        <i class="bi bi-calendar-event"></i> <strong>Created At:</strong> {{ note.createdAt | date:'short' }}<br />
+        <i class="bi bi-person"></i> <strong>By:</strong> {{ note.createdBy }}
+      </li>
+      }
+    </ul>
+  </div>
+
+  }
+  }
+</div>

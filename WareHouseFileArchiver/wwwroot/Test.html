@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Real-time File Notifications</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+    
+</head>
+<body>
+    <h1> Real-time File Notifications</h1>
+    <ul id="notifications"></ul>
+
+    <script>
+        // Create connection to SignalR hub
+        const connection = new signalR.HubConnectionBuilder()
+            .withUrl("http://localhost:5239/notificationhub") 
+            .withAutomaticReconnect()
+            .build();
+
+        // Start the connection
+        connection.start()
+            .then(() => console.log("Connected to NotificationHub"))
+            .catch(err => {
+                console.error("Connection error:", err);
+                const ul = document.getElementById("notifications");
+                const li = document.createElement("li");
+                li.textContent = "Failed to connect to notification server.";
+                ul.appendChild(li);
+            });
+            
+
+        connection.on("ReceiveNotification", function (data) {
+                const li = document.createElement("li");
+
+                li.innerHTML = `
+                    <div class="action"> ${data.action}</div>
+                    <div class="file-meta"><strong>ID:</strong> ${data.id}</div>
+                    <div class="file-meta"><strong>File Name:</strong> ${data.fileName}${data.fileExtension}</div>
+                    <div class="file-meta"><strong>Category:</strong> ${data.category}</div>
+                    <div class="file-meta"><strong>Size (bytes):</strong> ${data.fileSizeInBytes}</div>
+                    <div class="file-meta"><strong>File Path:</strong> ${data.filePath}</div>
+                    <div class="file-meta"><strong>Version:</strong> ${data.versionNumber}</div>
+                    <div class="file-meta"><strong>Item ID:</strong> ${data.itemId}</div>
+                    <div class="file-meta"><strong>Item Name:</strong> ${data.itemName ?? '-'}</div>
+                    <div class="file-meta"><strong>Created At:</strong> ${data.createdAt}</div>
+                    <div class="file-meta"><strong>Created By:</strong> ${data.createdBy}</div>
+                    <div class="file-meta"><strong>Updated At:</strong> ${data.updatedAt ?? '-'}</div>
+                    <div class="file-meta"><strong>Updated By:</strong> ${data.updatedBy ?? '-'}</div>
+                    <div class="file-meta"><strong>Item Category:</strong> ${data.itemCategory ?? '-'}</div>
+                `;
+
+
+                // li.textContent = "Hello"
+
+                document.getElementById("notifications").appendChild(li);
+        });
+
+        
+
+    </script>
+</body>
+</html>

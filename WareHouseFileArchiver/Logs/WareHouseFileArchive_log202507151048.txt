@@ -1,0 +1,15 @@
+2025-07-15 10:48:33.094 +05:30 [INF] Application is shutting down...
+2025-07-15 10:48:33.098 +05:30 [INF] Connection id "0HNE3BKGQ6NG4", Request id "0HNE3BKGQ6NG4:00000001": the application aborted the connection.
+2025-07-15 10:48:33.103 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null null
+2025-07-15 10:48:33.104 +05:30 [INF] CORS policy execution successful.
+2025-07-15 10:48:33.104 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 204 null null 0.3295ms
+2025-07-15 10:48:33.105 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-15 10:48:33.105 +05:30 [INF] CORS policy execution successful.
+2025-07-15 10:48:33.105 +05:30 [INF] Executing endpoint '/notificationhub/negotiate'
+2025-07-15 10:48:33.105 +05:30 [INF] Executed endpoint '/notificationhub/negotiate'
+2025-07-15 10:48:33.106 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 200 316 application/json 0.8553ms
+2025-07-15 10:48:33.107 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-15 10:48:33.107 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=W_D6Jk49FOQDnJwEwE2skg - 101 null null 595383.7059ms
+2025-07-15 10:48:33.110 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/notificationhub?id=MFA3Rq4mt8th8DEOLb-Ttw - null null
+2025-07-15 10:48:33.110 +05:30 [INF] CORS policy execution successful.
+2025-07-15 10:48:33.110 +05:30 [INF] Executing endpoint '/notificationhub'

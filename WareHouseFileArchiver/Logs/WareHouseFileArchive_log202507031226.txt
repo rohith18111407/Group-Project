@@ -1,0 +1,193 @@
+2025-07-03 12:26:04.296 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/api/v1/files - null null
+2025-07-03 12:26:04.298 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:04.298 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/api/v1/files - 204 null null 1.9379ms
+2025-07-03 12:26:04.299 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/api/v1/files - null null
+2025-07-03 12:26:04.299 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:04.299 +05:30 [INF] Executing endpoint 'WareHouseFileArchiver.Controllers.FilesController.GetAllFiles (WareHouseFileArchiver)'
+2025-07-03 12:26:04.299 +05:30 [INF] Route matched with {action = "GetAllFiles", controller = "Files"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllFiles() on controller WareHouseFileArchiver.Controllers.FilesController (WareHouseFileArchiver).
+2025-07-03 12:26:04.301 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."Category", a."CreatedAt", a."CreatedBy", a."Description", a."FileExtension", a."FileName", a."FilePath", a."FileSizeInBytes", a."ItemId", a."UpdatedAt", a."UpdatedBy", a."VersionNumber", i."Id", i."Category", i."CreatedAt", i."CreatedBy", i."Description", i."Name", i."UpdatedAt", i."UpdatedBy"
+FROM "ArchiveFiles" AS a
+LEFT JOIN "Items" AS i ON a."ItemId" = i."Id"
+ORDER BY a."CreatedAt" DESC
+2025-07-03 12:26:04.302 +05:30 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`4[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[WareHouseFileArchiver.Models.DTOs.AllFilesResponseDto, WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Object, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-03 12:26:04.302 +05:30 [INF] Executed action WareHouseFileArchiver.Controllers.FilesController.GetAllFiles (WareHouseFileArchiver) in 2.4036ms
+2025-07-03 12:26:04.302 +05:30 [INF] Executed endpoint 'WareHouseFileArchiver.Controllers.FilesController.GetAllFiles (WareHouseFileArchiver)'
+2025-07-03 12:26:04.302 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/api/v1/files - 200 null application/json; charset=utf-8 3.0879ms
+2025-07-03 12:26:06.830 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/api/v1/files/7a0f2b74-0565-4166-b94c-6d634013be30 - null null
+2025-07-03 12:26:06.830 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:06.830 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/api/v1/files/7a0f2b74-0565-4166-b94c-6d634013be30 - 204 null null 0.4538ms
+2025-07-03 12:26:06.832 +05:30 [INF] Request starting HTTP/1.1 DELETE http://localhost:5239/api/v1/files/7a0f2b74-0565-4166-b94c-6d634013be30 - null null
+2025-07-03 12:26:06.832 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:06.833 +05:30 [INF] Executing endpoint 'WareHouseFileArchiver.Controllers.FilesController.Delete (WareHouseFileArchiver)'
+2025-07-03 12:26:06.833 +05:30 [INF] Route matched with {action = "Delete", controller = "Files"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] Delete(System.Guid) on controller WareHouseFileArchiver.Controllers.FilesController (WareHouseFileArchiver).
+2025-07-03 12:26:06.835 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__id_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."Category", a."CreatedAt", a."CreatedBy", a."Description", a."FileExtension", a."FileName", a."FilePath", a."FileSizeInBytes", a."ItemId", a."UpdatedAt", a."UpdatedBy", a."VersionNumber"
+FROM "ArchiveFiles" AS a
+WHERE a."Id" = @__id_0
+LIMIT 1
+2025-07-03 12:26:06.836 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__file_Id_0='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+SELECT f."Id", f."ArchiveFileId", f."DownloadedAt", f."DownloadedBy"
+FROM "FileDownloadLogs" AS f
+WHERE f."ArchiveFileId" = @__file_Id_0
+2025-07-03 12:26:06.871 +05:30 [INF] Executed DbCommand (15ms) [Parameters=[@p0='?' (DbType = Guid), @p1='?' (DbType = Guid)], CommandType='"Text"', CommandTimeout='30']
+DELETE FROM "FileDownloadLogs"
+WHERE "Id" = @p0;
+DELETE FROM "ArchiveFiles"
+WHERE "Id" = @p1;
+2025-07-03 12:26:06.885 +05:30 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`4[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[<>f__AnonymousType11`3[[System.Guid, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-03 12:26:06.885 +05:30 [INF] Executed action WareHouseFileArchiver.Controllers.FilesController.Delete (WareHouseFileArchiver) in 52.1027ms
+2025-07-03 12:26:06.885 +05:30 [INF] Executed endpoint 'WareHouseFileArchiver.Controllers.FilesController.Delete (WareHouseFileArchiver)'
+2025-07-03 12:26:06.886 +05:30 [INF] Request finished HTTP/1.1 DELETE http://localhost:5239/api/v1/files/7a0f2b74-0565-4166-b94c-6d634013be30 - 200 null application/json; charset=utf-8 53.3132ms
+2025-07-03 12:26:08.282 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/api/v1/files - null null
+2025-07-03 12:26:08.282 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:08.282 +05:30 [INF] Executing endpoint 'WareHouseFileArchiver.Controllers.FilesController.GetAllFiles (WareHouseFileArchiver)'
+2025-07-03 12:26:08.283 +05:30 [INF] Route matched with {action = "GetAllFiles", controller = "Files"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllFiles() on controller WareHouseFileArchiver.Controllers.FilesController (WareHouseFileArchiver).
+2025-07-03 12:26:08.284 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."Category", a."CreatedAt", a."CreatedBy", a."Description", a."FileExtension", a."FileName", a."FilePath", a."FileSizeInBytes", a."ItemId", a."UpdatedAt", a."UpdatedBy", a."VersionNumber", i."Id", i."Category", i."CreatedAt", i."CreatedBy", i."Description", i."Name", i."UpdatedAt", i."UpdatedBy"
+FROM "ArchiveFiles" AS a
+LEFT JOIN "Items" AS i ON a."ItemId" = i."Id"
+ORDER BY a."CreatedAt" DESC
+2025-07-03 12:26:08.285 +05:30 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`4[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[WareHouseFileArchiver.Models.DTOs.AllFilesResponseDto, WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Object, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-03 12:26:08.286 +05:30 [INF] Executed action WareHouseFileArchiver.Controllers.FilesController.GetAllFiles (WareHouseFileArchiver) in 2.9173ms
+2025-07-03 12:26:08.286 +05:30 [INF] Executed endpoint 'WareHouseFileArchiver.Controllers.FilesController.GetAllFiles (WareHouseFileArchiver)'
+2025-07-03 12:26:08.286 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/api/v1/files - 200 null application/json; charset=utf-8 4.0922ms
+2025-07-03 12:26:10.992 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/api/v1/statistics/file-extension-stats - null null
+2025-07-03 12:26:10.993 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:10.993 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/api/v1/statistics/file-extension-stats - 204 null null 0.2446ms
+2025-07-03 12:26:10.993 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/api/v1/statistics/upload-download-trends - null null
+2025-07-03 12:26:10.993 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:10.993 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/api/v1/statistics/upload-download-trends - 204 null null 0.1753ms
+2025-07-03 12:26:10.993 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/api/v1/statistics/recent-activities - null null
+2025-07-03 12:26:10.993 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:10.993 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/api/v1/statistics/recent-activities - 204 null null 0.1233ms
+2025-07-03 12:26:11.000 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/api/v1/statistics/file-extension-stats - null null
+2025-07-03 12:26:11.000 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/api/v1/statistics/recent-items - null null
+2025-07-03 12:26:11.000 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:11.000 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:11.000 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/api/v1/statistics/recent-activities - null null
+2025-07-03 12:26:11.000 +05:30 [INF] Executing endpoint 'WareHouseFileArchiver.Controllers.StatisticsController.GetFileExtensionStats (WareHouseFileArchiver)'
+2025-07-03 12:26:11.000 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:11.000 +05:30 [INF] Route matched with {action = "GetFileExtensionStats", controller = "Statistics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetFileExtensionStats() on controller WareHouseFileArchiver.Controllers.StatisticsController (WareHouseFileArchiver).
+2025-07-03 12:26:11.000 +05:30 [INF] Executing endpoint 'WareHouseFileArchiver.Controllers.StatisticsController.GetRecentActivities (WareHouseFileArchiver)'
+2025-07-03 12:26:11.000 +05:30 [INF] Route matched with {action = "GetRecentActivities", controller = "Statistics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetRecentActivities(Int32) on controller WareHouseFileArchiver.Controllers.StatisticsController (WareHouseFileArchiver).
+2025-07-03 12:26:11.000 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/api/v1/statistics/recent-files - null null
+2025-07-03 12:26:11.001 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/api/v1/statistics/upload-download-trends - null null
+2025-07-03 12:26:11.000 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/api/v1/statistics/recent-items - 204 null null 0.2528ms
+2025-07-03 12:26:11.001 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:11.001 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:11.001 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/api/v1/statistics/recent-files - 204 null null 1.6318ms
+2025-07-03 12:26:11.002 +05:30 [INF] Executing endpoint 'WareHouseFileArchiver.Controllers.StatisticsController.GetUploadDownloadTrends (WareHouseFileArchiver)'
+2025-07-03 12:26:11.002 +05:30 [INF] Route matched with {action = "GetUploadDownloadTrends", controller = "Statistics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetUploadDownloadTrends() on controller WareHouseFileArchiver.Controllers.StatisticsController (WareHouseFileArchiver).
+2025-07-03 12:26:11.003 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/api/v1/statistics/recent-items - null null
+2025-07-03 12:26:11.003 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:11.003 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/api/v1/statistics/recent-files - null null
+2025-07-03 12:26:11.004 +05:30 [INF] Executing endpoint 'WareHouseFileArchiver.Controllers.StatisticsController.GetRecentItems (WareHouseFileArchiver)'
+2025-07-03 12:26:11.004 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:11.004 +05:30 [INF] Route matched with {action = "GetRecentItems", controller = "Statistics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetRecentItems(Int32) on controller WareHouseFileArchiver.Controllers.StatisticsController (WareHouseFileArchiver).
+2025-07-03 12:26:11.004 +05:30 [INF] Executing endpoint 'WareHouseFileArchiver.Controllers.StatisticsController.GetRecentFiles (WareHouseFileArchiver)'
+2025-07-03 12:26:11.005 +05:30 [INF] Route matched with {action = "GetRecentFiles", controller = "Statistics"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetRecentFiles(Int32) on controller WareHouseFileArchiver.Controllers.StatisticsController (WareHouseFileArchiver).
+2025-07-03 12:26:11.020 +05:30 [INF] Executed DbCommand (19ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT a."FileExtension" AS "Extension", COALESCE(sum(a."FileSizeInBytes"), 0.0)::bigint AS "TotalSize", count(*)::int AS "Count"
+FROM "ArchiveFiles" AS a
+GROUP BY a."FileExtension"
+2025-07-03 12:26:11.020 +05:30 [INF] Executed DbCommand (19ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT 'Uploaded' AS "Action", a."CreatedAt" AS "Timestamp", a."CreatedBy" AS "User", a."FileName" || a."FileExtension" AS "Target"
+FROM "ArchiveFiles" AS a
+ORDER BY a."CreatedAt" DESC
+LIMIT @__p_0
+2025-07-03 12:26:11.020 +05:30 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+ListSelectIterator`2[[<>f__AnonymousType32`3[[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int64, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[WareHouseFileArchiver.Models.DTOs.FileExtensionStatDto, WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-07-03 12:26:11.020 +05:30 [INF] Executed DbCommand (14ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT i."Id", i."Category", i."CreatedAt", i."CreatedBy", i."Description", i."Name", i."UpdatedAt", i."UpdatedBy"
+FROM "Items" AS i
+ORDER BY i."CreatedAt" DESC
+LIMIT @__p_0
+2025-07-03 12:26:11.020 +05:30 [INF] Executed DbCommand (17ms) [Parameters=[@__fromDate_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Key", a0."Id", a0."Category", a0."CreatedAt", a0."CreatedBy", a0."Description", a0."FileExtension", a0."FileName", a0."FilePath", a0."FileSizeInBytes", a0."ItemId", a0."UpdatedAt", a0."UpdatedBy", a0."VersionNumber"
+FROM (
+    SELECT a."Id", a."Category", a."CreatedAt", a."CreatedBy", a."Description", a."FileExtension", a."FileName", a."FilePath", a."FileSizeInBytes", a."ItemId", a."UpdatedAt", a."UpdatedBy", a."VersionNumber", date_trunc('day', a."CreatedAt", 'UTC') AS "Key"
+    FROM "ArchiveFiles" AS a
+    WHERE a."CreatedAt" >= @__fromDate_0
+) AS a0
+ORDER BY a0."Key"
+2025-07-03 12:26:11.021 +05:30 [INF] Executed action WareHouseFileArchiver.Controllers.StatisticsController.GetFileExtensionStats (WareHouseFileArchiver) in 20.3775ms
+2025-07-03 12:26:11.021 +05:30 [INF] Executed endpoint 'WareHouseFileArchiver.Controllers.StatisticsController.GetFileExtensionStats (WareHouseFileArchiver)'
+2025-07-03 12:26:11.021 +05:30 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+ListSelectIterator`2[[WareHouseFileArchiver.Models.Domains.Item, WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[WareHouseFileArchiver.Models.DTOs.RecentItemDto, WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-07-03 12:26:11.021 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/api/v1/statistics/file-extension-stats - 200 null application/json; charset=utf-8 21.5072ms
+2025-07-03 12:26:11.021 +05:30 [INF] Executed action WareHouseFileArchiver.Controllers.StatisticsController.GetRecentItems (WareHouseFileArchiver) in 17.775ms
+2025-07-03 12:26:11.022 +05:30 [INF] Executed endpoint 'WareHouseFileArchiver.Controllers.StatisticsController.GetRecentItems (WareHouseFileArchiver)'
+2025-07-03 12:26:11.024 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/api/v1/statistics/recent-items - 200 null application/json; charset=utf-8 20.6217ms
+2025-07-03 12:26:11.025 +05:30 [INF] Executed DbCommand (18ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Id", a0."Category", a0."CreatedAt", a0."CreatedBy", a0."Description", a0."FileExtension", a0."FileName", a0."FilePath", a0."FileSizeInBytes", a0."ItemId", a0."UpdatedAt", a0."UpdatedBy", a0."VersionNumber", i."Id", i."Category", i."CreatedAt", i."CreatedBy", i."Description", i."Name", i."UpdatedAt", i."UpdatedBy"
+FROM (
+    SELECT a."Id", a."Category", a."CreatedAt", a."CreatedBy", a."Description", a."FileExtension", a."FileName", a."FilePath", a."FileSizeInBytes", a."ItemId", a."UpdatedAt", a."UpdatedBy", a."VersionNumber"
+    FROM "ArchiveFiles" AS a
+    ORDER BY a."CreatedAt" DESC
+    LIMIT @__p_0
+) AS a0
+LEFT JOIN "Items" AS i ON a0."ItemId" = i."Id"
+ORDER BY a0."CreatedAt" DESC
+2025-07-03 12:26:11.026 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[@__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT 'Downloaded' AS "Action", f."DownloadedAt" AS "Timestamp", f."DownloadedBy" AS "User", a."FileName" || a."FileExtension" AS "Target"
+FROM "FileDownloadLogs" AS f
+INNER JOIN "ArchiveFiles" AS a ON f."ArchiveFileId" = a."Id"
+ORDER BY f."DownloadedAt" DESC
+LIMIT @__p_0
+2025-07-03 12:26:11.026 +05:30 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+ListSelectIterator`2[[WareHouseFileArchiver.Models.Domains.ArchiveFile, WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[WareHouseFileArchiver.Models.DTOs.RecentFileDto, WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-07-03 12:26:11.026 +05:30 [INF] Executing OkObjectResult, writing value of type 'System.Linq.Enumerable+SkipTakeOrderedIterator`1[[WareHouseFileArchiver.Models.DTOs.ActivityLogDto, WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]'.
+2025-07-03 12:26:11.026 +05:30 [INF] Executed action WareHouseFileArchiver.Controllers.StatisticsController.GetRecentFiles (WareHouseFileArchiver) in 20.405ms
+2025-07-03 12:26:11.026 +05:30 [INF] Executed endpoint 'WareHouseFileArchiver.Controllers.StatisticsController.GetRecentFiles (WareHouseFileArchiver)'
+2025-07-03 12:26:11.027 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/api/v1/statistics/recent-files - 200 null application/json; charset=utf-8 23.6477ms
+2025-07-03 12:26:11.027 +05:30 [INF] Executed action WareHouseFileArchiver.Controllers.StatisticsController.GetRecentActivities (WareHouseFileArchiver) in 25.6462ms
+2025-07-03 12:26:11.027 +05:30 [INF] Executed endpoint 'WareHouseFileArchiver.Controllers.StatisticsController.GetRecentActivities (WareHouseFileArchiver)'
+2025-07-03 12:26:11.027 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/api/v1/statistics/recent-activities - 200 null application/json; charset=utf-8 27.1371ms
+2025-07-03 12:26:11.030 +05:30 [INF] Executed DbCommand (8ms) [Parameters=[@__fromDate_0='?' (DbType = DateTime)], CommandType='"Text"', CommandTimeout='30']
+SELECT f0."Key", f0."Id", f0."ArchiveFileId", f0."DownloadedAt", f0."DownloadedBy"
+FROM (
+    SELECT f."Id", f."ArchiveFileId", f."DownloadedAt", f."DownloadedBy", date_trunc('day', f."DownloadedAt", 'UTC') AS "Key"
+    FROM "FileDownloadLogs" AS f
+    WHERE f."DownloadedAt" >= @__fromDate_0 AND EXISTS (
+        SELECT 1
+        FROM "ArchiveFiles" AS a
+        WHERE a."Id" = f."ArchiveFileId")
+) AS f0
+ORDER BY f0."Key"
+2025-07-03 12:26:11.030 +05:30 [INF] Executing OkObjectResult, writing value of type 'WareHouseFileArchiver.Models.DTOs.UploadDownloadTrendDto'.
+2025-07-03 12:26:11.031 +05:30 [INF] Executed action WareHouseFileArchiver.Controllers.StatisticsController.GetUploadDownloadTrends (WareHouseFileArchiver) in 28.6341ms
+2025-07-03 12:26:11.031 +05:30 [INF] Executed endpoint 'WareHouseFileArchiver.Controllers.StatisticsController.GetUploadDownloadTrends (WareHouseFileArchiver)'
+2025-07-03 12:26:11.032 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/api/v1/statistics/upload-download-trends - 200 null application/json; charset=utf-8 30.7432ms
+2025-07-03 12:26:54.082 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/api/v1/files - null null
+2025-07-03 12:26:54.083 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:54.083 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/api/v1/files - 204 null null 1.0165ms
+2025-07-03 12:26:54.084 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/api/v1/files - null null
+2025-07-03 12:26:54.084 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:54.085 +05:30 [INF] Executing endpoint 'WareHouseFileArchiver.Controllers.FilesController.GetAllFiles (WareHouseFileArchiver)'
+2025-07-03 12:26:54.085 +05:30 [INF] Route matched with {action = "GetAllFiles", controller = "Files"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAllFiles() on controller WareHouseFileArchiver.Controllers.FilesController (WareHouseFileArchiver).
+2025-07-03 12:26:54.088 +05:30 [INF] Executed DbCommand (2ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."Category", a."CreatedAt", a."CreatedBy", a."Description", a."FileExtension", a."FileName", a."FilePath", a."FileSizeInBytes", a."ItemId", a."UpdatedAt", a."UpdatedBy", a."VersionNumber", i."Id", i."Category", i."CreatedAt", i."CreatedBy", i."Description", i."Name", i."UpdatedAt", i."UpdatedBy"
+FROM "ArchiveFiles" AS a
+LEFT JOIN "Items" AS i ON a."ItemId" = i."Id"
+ORDER BY a."CreatedAt" DESC
+2025-07-03 12:26:54.089 +05:30 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`4[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[WareHouseFileArchiver.Models.DTOs.AllFilesResponseDto, WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Object, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-03 12:26:54.089 +05:30 [INF] Executed action WareHouseFileArchiver.Controllers.FilesController.GetAllFiles (WareHouseFileArchiver) in 3.8918ms
+2025-07-03 12:26:54.089 +05:30 [INF] Executed endpoint 'WareHouseFileArchiver.Controllers.FilesController.GetAllFiles (WareHouseFileArchiver)'
+2025-07-03 12:26:54.089 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/api/v1/files - 200 null application/json; charset=utf-8 4.7399ms
+2025-07-03 12:26:55.134 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/api/v1/Items?isDescending=false&pageNumber=1&pageSize=100&sortBy=createdAt - null null
+2025-07-03 12:26:55.135 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:55.135 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/api/v1/Items?isDescending=false&pageNumber=1&pageSize=100&sortBy=createdAt - 204 null null 0.3454ms
+2025-07-03 12:26:55.137 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/api/v1/Items?isDescending=false&pageNumber=1&pageSize=100&sortBy=createdAt - null null
+2025-07-03 12:26:55.137 +05:30 [INF] CORS policy execution successful.
+2025-07-03 12:26:55.137 +05:30 [INF] Executing endpoint 'WareHouseFileArchiver.Controllers.ItemsController.GetAll (WareHouseFileArchiver)'
+2025-07-03 12:26:55.137 +05:30 [INF] Route matched with {action = "GetAll", controller = "Items"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetAll(System.String, Boolean, Int32, Int32) on controller WareHouseFileArchiver.Controllers.ItemsController (WareHouseFileArchiver).
+2025-07-03 12:26:55.138 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[@__p_1='?' (DbType = Int32), @__p_0='?' (DbType = Int32)], CommandType='"Text"', CommandTimeout='30']
+SELECT i."Id", i."Category", i."CreatedAt", i."CreatedBy", i."Description", i."Name", i."UpdatedAt", i."UpdatedBy"
+FROM "Items" AS i
+ORDER BY i."CreatedAt"
+LIMIT @__p_1 OFFSET @__p_0
+2025-07-03 12:26:55.139 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT count(*)::int
+FROM "Items" AS i
+2025-07-03 12:26:55.139 +05:30 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType14`5[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.List`1[[WareHouseFileArchiver.Models.DTOs.ItemDto, WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[<>f__AnonymousType15`3[[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Int32, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]], WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null],[System.Object, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-03 12:26:55.139 +05:30 [INF] Executed action WareHouseFileArchiver.Controllers.ItemsController.GetAll (WareHouseFileArchiver) in 2.2489ms
+2025-07-03 12:26:55.139 +05:30 [INF] Executed endpoint 'WareHouseFileArchiver.Controllers.ItemsController.GetAll (WareHouseFileArchiver)'
+2025-07-03 12:26:55.139 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/api/v1/Items?isDescending=false&pageNumber=1&pageSize=100&sortBy=createdAt - 200 null application/json; charset=utf-8 2.8533ms

@@ -1,0 +1,29 @@
+<div class="container mt-4">
+  <h3 class="text-primary">Welcome 👋</h3>
+
+  <h5 class="mb-3">Item Details</h5>
+  <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
+    @for (card of itemCards; track card.name) {
+      <div class="col">
+        <div class="card shadow-sm h-100 border-primary">
+          <div class="card-body">
+            <h5 class="card-title"><i class="bi bi-box-seam me-2"></i>{{ card.name }}</h5>
+            <p class="card-text"><i class="bi bi-file-earmark-text me-1"></i>Files: {{ card.fileCount }}</p>
+            <p class="card-text"><i class="bi bi-tags me-1"></i>Categories: {{ card.categoryCount }}</p>
+            <p class="card-text"><i class="bi bi-hdd me-1"></i>Total Space: {{ card.totalSizeMB }} MB</p>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+
+  <div class="row mt-5">
+    <div class="col-12">
+      <h5 class="mb-3">File Category Space Usage</h5>
+      <canvas baseChart
+              [data]="pieChartData"
+              [type]="'pie'">
+      </canvas>
+    </div>
+  </div>
+</div>

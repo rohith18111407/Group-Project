@@ -1,0 +1,56 @@
+<div class="statistics-container">
+  <h4 class="mb-3"><i class="bi bi-graph-up-arrow me-1"></i> Statistics Dashboard</h4>
+
+  <div class="mb-4">
+    <h5>File Extension Usage</h5>
+    <canvas baseChart [data]="pieChartData.data" [type]="pieChartData.type"></canvas>
+  </div>
+
+  <div class="mb-4">
+    <h5>Uploads vs Downloads (Last 7 Days)</h5>
+    <canvas baseChart [data]="lineChartData.data" [type]="lineChartData.type"></canvas>
+  </div>
+
+  <div class="mb-4">
+    <h5>Recent Activities (Staff/Admin)</h5>
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let activity of recentActivities">
+        {{ activity.user }} performed <strong>{{ activity.action }}</strong> on {{ activity.target }} at {{ activity.timestamp | date:'short' }}
+      </li>
+    </ul>
+  </div>
+
+  <div class="mb-4">
+    <h5>Recent Files</h5>
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr><th>File</th><th>Size</th><th>Created By</th><th>Created At</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let file of recentFiles">
+          <td>{{ file.fileName }}{{ file.fileExtension }}</td>
+          <td>{{ file.sizeMB }} MB</td>
+          <td>{{ file.createdBy }}</td>
+          <td>{{ file.createdAt | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="mb-4">
+    <h5>Recent Items</h5>
+    <table class="table table-sm table-hover">
+      <thead>
+        <tr><th>Name</th><th>Category</th><th>Created By</th><th>Created At</th></tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of recentItems">
+          <td>{{ item.name }}</td>
+          <td>{{ item.categories?.join(', ') }}</td>
+          <td>{{ item.createdBy }}</td>
+          <td>{{ item.createdAt | date:'short' }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+<form [formGroup]="userForm" (ngSubmit)="submit()" class="border p-3 rounded bg-light">
+  <div class="mb-2">
+    <label>Email/Username</label>
+    <input class="form-control" type="email" formControlName="username" />
+    <div class="text-danger small" *ngIf="username?.touched && username?.invalid">
+      Valid email is required.
+    </div>
+  </div>
+
+  <div class="mb-2">
+    <label>Password</label>
+    <input class="form-control" type="password" formControlName="password" />
+    <div class="text-danger small" *ngIf="password?.touched && password?.invalid">
+      Min 6 characters required.
+    </div>
+  </div>
+
+  <div class="mb-2">
+    <label>Role</label>
+    <select class="form-select" formControlName="role">
+      <option value="Admin">Admin</option>
+      <option value="Staff">Staff</option>
+    </select>
+  </div>
+
+  <div class="d-flex justify-content-end gap-2 mt-3">
+    <button type="button" class="btn btn-secondary" (click)="cancelForm()">Cancel</button>
+    <button type="submit" class="btn btn-danger" [disabled]="userForm.invalid">Create</button>
+  </div>
+</form>

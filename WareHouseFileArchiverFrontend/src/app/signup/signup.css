@@ -1,0 +1,17 @@
+.card {
+  background-color: #ffffff;
+  border-radius: 0.75rem;
+  border: 1px solid #ddd;
+}
+
+@media (max-width: 576px) {
+  .card {
+    padding: 1rem !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 2rem !important;
+  }
+}

@@ -1,0 +1,173 @@
+C# WebApi setup in VSCode
+  dotnet new webapi -n "NZWalksAPI";
+
+dotnet tool install --global dotnet-ef  
+
+dotnet add package Microsoft.EntityFrameworkCore.Design
+
+dotnet add package Microsoft.EntityFrameworkCore 
+
+dotnet add package Npgsql.entityframeworkcore.postgre 
+
+dotnet add package Npgsql.EntityFrameworkCore.PostgreSQL
+
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer 
+
+dotnet add package Swashbuckle.AspNetCore  
+
+dotnet add package AutoMapper
+
+dotnet add package Microsoft.IdentityModel.Tokens
+
+dotnet add package System.IdentityModel.Tokens.Jwt
+
+dotnet add package Microsoft.AspNetCore.Identity.EntityFrameworkCore
+
+dotnet build 
+
+dotnet run
+
+
+
+Add the following:
+
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using NZWalksAPI.Data;
+
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddControllers();
+
+builder.Services.AddDbContext<NZWalksDbContext>(opts =>
+{
+    opts.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+});
+
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
+
+
+Also check under properties -> launchSettings.json:
+
+"profiles": {
+    "http": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "applicationUrl": "http://localhost:5235",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "swagger",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+
+Also check appsetiings.json  {
+    "Logging": {
+        "LogLevel": {
+            "Default": "Information",
+            "Microsoft.AspNetCore": "Warning"
+        }
+    },
+    "ConnectionStrings": {
+        "DefaultConnection": "User ID=postgres;Password=ROHITH;Host=localhost;Port=5432;Database=DoctorPatientAppointment;"
+    },
+    "AllowedHosts": "*"
+}
+
+
+Migrations:
+
+dotnet ef database update init --context NZWalksAuthDbContext
+
+
+dotnet ef migrations add InitialMigrations --project BasicBankingApplication --startup-project BasicBankingApplication
+
+dotnet ef database update --project BasicBankingApplication --startup-project BasicBankingApplication
+
+dotnet ef migrations add "Adding ImageTable" --context "NzWalksDbContext"
+
+dotnet ef database update  --context "NzWalksDbContext"
+
+
+
+Unit Testing 
+ dotnet add package NUnit
+dotnet add package NUnit3TestAdapter
+dotnet add package Microsoft.NET.Test.Sdk
+dotnet add package Microsoft.EntityFrameworkCore.InMemory
+
+dotnet add package Moq 
+
+dotnet add package Microsoft.Extensions.Logging.Log4Net.AspNetCore
+
+dotnet add package Microsoft.AspNetCore.Authentication.Google
+
+
+dotnet restore
+
+dotnet clean
+dotnet restore
+dotnet build
+dotnet test
+
+
+
+Logging using Serilog
+
+
+dotnet add package Serilog
+
+dotnet add package Serilog.AspNetCore
+
+dotnet add package Serilog.Sinks.Console
+
+dotnet add package Serilog.Sinks.File 
+
+
+Versioning
+
+dotnet add package Microsoft.AspNetCore.Mvc.Versioning
+
+dotnet add package Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer
+
+
+
+SignalR
+
+dotnet add package Microsoft.AspNetCore.SignalR
+
+
+
+
+
+
+
