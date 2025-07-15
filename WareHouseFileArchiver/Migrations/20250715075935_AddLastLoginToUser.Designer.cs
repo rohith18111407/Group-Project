@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WareHouseFileArchiver.Data;
@@ -11,9 +12,11 @@ using WareHouseFileArchiver.Data;
 namespace WareHouseFileArchiver.Migrations
 {
     [DbContext(typeof(WareHouseArchiveAuthDbContext))]
-    partial class WareHouseArchiveAuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250715075935_AddLastLoginToUser")]
+    partial class AddLastLoginToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

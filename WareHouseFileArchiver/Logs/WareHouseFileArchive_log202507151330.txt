@@ -1,0 +1,38 @@
+2025-07-15 13:30:01.968 +05:30 [INF] Executed DbCommand (20ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-07-15 13:30:02.271 +05:30 [INF] Executed DbCommand (6ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+CREATE TABLE IF NOT EXISTS "__EFMigrationsHistory" (
+    "MigrationId" character varying(150) NOT NULL,
+    "ProductVersion" character varying(32) NOT NULL,
+    CONSTRAINT "PK___EFMigrationsHistory" PRIMARY KEY ("MigrationId")
+);
+2025-07-15 13:30:02.279 +05:30 [INF] Acquiring an exclusive lock for migration application. See https://aka.ms/efcore-docs-migrations-lock for more information if this takes too long.
+2025-07-15 13:30:02.284 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+LOCK TABLE "__EFMigrationsHistory" IN ACCESS EXCLUSIVE MODE
+2025-07-15 13:30:02.285 +05:30 [INF] Executed DbCommand (0ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT "MigrationId", "ProductVersion"
+FROM "__EFMigrationsHistory"
+ORDER BY "MigrationId";
+2025-07-15 13:30:02.292 +05:30 [INF] Applying migration '20250715075935_AddLastLoginToUser'.
+2025-07-15 13:30:02.305 +05:30 [INF] Executed DbCommand (3ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+ALTER TABLE "AspNetUsers" ADD "LastLoginAt" timestamp with time zone;
+2025-07-15 13:30:02.306 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+INSERT INTO "__EFMigrationsHistory" ("MigrationId", "ProductVersion")
+VALUES ('20250715075935_AddLastLoginToUser', '9.0.5');
+2025-07-15 13:30:43.266 +05:30 [INF] User profile is available. Using '/Users/presidio/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-07-15 13:30:43.423 +05:30 [INF] Now listening on: http://localhost:5239
+2025-07-15 13:30:43.425 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-15 13:30:43.425 +05:30 [INF] Hosting environment: Development
+2025-07-15 13:30:43.425 +05:30 [INF] Content root path: /Users/presidio/Desktop/Group Project/WareHouseFileArchiver
+2025-07-15 13:30:45.638 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/ - null null
+2025-07-15 13:30:45.777 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/ - 404 0 null 141.0712ms
+2025-07-15 13:30:45.810 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: GET http://localhost:5239/, Response status code: 404
+2025-07-15 13:30:49.307 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/swagger/v1/swagger.json - null null
+2025-07-15 13:30:49.460 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/swagger/v1/swagger.json - 200 null application/json;charset=utf-8 153.8879ms
+2025-07-15 13:30:56.040 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/api/v1/auth/LastLogin - null null
+2025-07-15 13:30:56.055 +05:30 [INF] Authorization failed. These requirements were not met:
+RolesAuthorizationRequirement:User.IsInRole must be true for one of the following roles: (Admin)
+2025-07-15 13:30:56.059 +05:30 [INF] AuthenticationScheme: Bearer was challenged.
+2025-07-15 13:30:56.059 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/api/v1/auth/LastLogin - 401 0 null 19.5998ms

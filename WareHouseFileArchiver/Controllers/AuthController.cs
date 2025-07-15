@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using WareHouseFileArchiver.Interfaces;
 using WareHouseFileArchiver.Models.Domains;
 using WareHouseFileArchiver.Models.DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace WareHouseFileArchiver.Controllers
 {
@@ -146,6 +147,7 @@ namespace WareHouseFileArchiver.Controllers
 
                         user.RefreshToken = refreshToken;
                         user.RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(15);
+                        user.LastLoginAt = DateTime.UtcNow;
                         await userManager.UpdateAsync(user);
 
                         var response = new LoginResponseDto
@@ -329,13 +331,6 @@ namespace WareHouseFileArchiver.Controllers
             }
             var roles = await userManager.GetRolesAsync(user);
 
-            // return Ok(new
-            // {
-            //     user.Id,
-            //     user.UserName,
-            //     user.Email,
-            //     Roles = roles
-            // });
             return Ok(new
             {
                 success = true,
@@ -350,5 +345,28 @@ namespace WareHouseFileArchiver.Controllers
                 errors = (object?)null
             });
         }
+
+        [Authorize(Roles = "Admin,Staff")]
+        [HttpGet("LastLogin")]
+        public async Task<IActionResult> GetUserLastLogin()
+        {
+            var users = await userManager.Users
+                .Select(u => new
+                {
+                    u.Id,
+                    u.UserName,
+                    u.Email,
+                    u.LastLoginAt
+                })
+                .ToListAsync();
+
+            return Ok(new
+            {
+                success = true,
+                message = "Last login times retrieved",
+                data = users
+            });
+        }
+
     }
 }

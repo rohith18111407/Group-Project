@@ -6,5 +6,6 @@ namespace WareHouseFileArchiver.Models.Domains
     {
         public string? RefreshToken { get; set; }
         public DateTime? RefreshTokenExpiryTime { get; set; }
+        public DateTime? LastLoginAt { get; set; }
     }
 }
