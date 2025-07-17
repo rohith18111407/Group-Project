@@ -1,0 +1,11 @@
+2025-07-16 18:25:39.576 +05:30 [INF] Application is shutting down...
+2025-07-16 18:25:39.584 +05:30 [INF] Connection id "0HNE4CJ835SCD", Request id "0HNE4CJ835SCD:00000001": the application aborted the connection.
+2025-07-16 18:25:39.586 +05:30 [INF] Connection id "0HNE4CJ835SC5", Request id "0HNE4CJ835SC5:00000001": the application aborted the connection.
+2025-07-16 18:25:39.587 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-16 18:25:39.588 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=l4suPaWOwCAbX0sUwAihcw - 101 null null 136702.5652ms
+2025-07-16 18:25:39.591 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-16 18:25:39.591 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=FMCqyE368lg06jofZc-ZcA - 101 null null 984504.4197ms
+2025-07-16 18:25:39.593 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-16 18:25:39.594 +05:30 [INF] Executing endpoint '/notificationhub/negotiate'
+2025-07-16 18:25:39.594 +05:30 [INF] Executed endpoint '/notificationhub/negotiate'
+2025-07-16 18:25:39.594 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 200 316 application/json 0.8759ms

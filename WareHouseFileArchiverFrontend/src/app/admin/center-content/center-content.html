@@ -105,11 +105,29 @@
     </select>
 </div>
 
+<!-- Add sorting controls for user information -->
+<div class="d-flex gap-2 mb-3 flex-wrap">
+    <button class="btn btn-outline-secondary btn-sm" (click)="changeUserSort('username')">
+        Sort by Username
+        <i class="bi" [class.bi-sort-down]="!userSortDescending" [class.bi-sort-up]="userSortDescending"
+            *ngIf="userSortBy === 'username'"></i>
+    </button>
+    <button class="btn btn-outline-secondary btn-sm" (click)="changeUserSort('lastlogin')">
+        Sort by Last Login
+        <i class="bi" [class.bi-sort-down]="!userSortDescending" [class.bi-sort-up]="userSortDescending"
+            *ngIf="userSortBy === 'lastlogin'"></i>
+    </button>
+    <button class="btn btn-outline-secondary btn-sm" (click)="changeUserSort('role')">
+        Sort by Role
+        <i class="bi" [class.bi-sort-down]="!userSortDescending" [class.bi-sort-up]="userSortDescending"
+            *ngIf="userSortBy === 'role'"></i>
+    </button>
+</div>
+
 @if (showEditUserForm) {
 <app-edit-user [user]="selectedUserToEdit" (cancel)="showEditUserForm = false" (userUpdated)="onUserUpdated()">
 </app-edit-user>
 }
-
 
 @if (showAddUserForm) {
 <app-add-user (cancel)="toggleAddUserForm(false)" (userCreated)="onUserCreated()"></app-add-user>
@@ -137,6 +155,8 @@
                 <th>Username</th>
                 <th>Email</th>
                 <th>Roles</th>
+                <th>Last Login</th>
+                <th>Login Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -145,7 +165,30 @@
             <tr>
                 <td>{{ user.username }}</td>
                 <td>{{ user.email }}</td>
-                <td>{{ user.roles?.join(', ') }}</td>
+                <td>
+                    <span class="badge bg-primary me-1" *ngFor="let role of user.roles">
+                        {{ role }}
+                    </span>
+                </td>
+                <td class="login-info-cell">
+                    <div class="d-flex flex-column">
+                        <span class="fw-bold">{{ user.lastLoginFormatted || 'Never logged in' }}</span>
+                        <small class="text-muted" *ngIf="user.daysSinceLastLogin !== null">
+                            {{ user.daysSinceLastLogin }} days ago
+                        </small>
+                    </div>
+                </td>
+                <td>
+                    <span class="badge login-status-badge" 
+                          [class.bg-success]="user.loginStatus === 'Active today'"
+                          [class.bg-warning]="user.loginStatus === 'Active yesterday'"
+                          [class.bg-info]="user.loginStatus === 'Active this week'"
+                          [class.bg-secondary]="user.loginStatus === 'Active this month'"
+                          [class.bg-danger]="user.loginStatus === 'Inactive'"
+                          [class.bg-dark]="user.loginStatus === 'Never logged in'">
+                        {{ user.loginStatus }}
+                    </span>
+                </td>
                 <td>
                     <button class="btn btn-sm btn-warning me-1" (click)="toggleEditUserForm(user)">
                         <i class="bi bi-pencil"></i>

@@ -57,7 +57,7 @@ namespace WareHouseFileArchiver.Repositories
             };
 
             var result = await userManager.DeleteAsync(user);
-            return deletedUserDto ;
+            return deletedUserDto;
         }
 
         public async Task<List<UserDto>> GetAllAsync(int pageNumber, int pageSize,
@@ -71,12 +71,14 @@ namespace WareHouseFileArchiver.Repositories
                 // Get users in role (in-memory list)
                 users = (await userManager.GetUsersInRoleAsync(roleFilter)).ToList();
 
-                // Apply sorting manually
+                // Apply sorting manually - Enhanced with lastlogin sorting
                 users = (sortBy?.ToLower(), sortOrder?.ToLower()) switch
                 {
                     ("username", "desc") => users.OrderByDescending(u => u.UserName).ToList(),
                     ("email", "asc") => users.OrderBy(u => u.Email).ToList(),
                     ("email", "desc") => users.OrderByDescending(u => u.Email).ToList(),
+                    ("lastlogin", "asc") => users.OrderBy(u => u.LastLoginAt ?? DateTime.MinValue).ToList(),
+                    ("lastlogin", "desc") => users.OrderByDescending(u => u.LastLoginAt ?? DateTime.MinValue).ToList(),
                     ("username", _) => users.OrderBy(u => u.UserName).ToList(),
                     _ => users.OrderBy(u => u.UserName).ToList()
                 };
@@ -88,12 +90,14 @@ namespace WareHouseFileArchiver.Repositories
             {
                 var usersQuery = userManager.Users.AsQueryable();
 
-                // Sorting with IQueryable for EF support
+                // Sorting with IQueryable for EF support - Enhanced with lastlogin sorting
                 usersQuery = (sortBy?.ToLower(), sortOrder?.ToLower()) switch
                 {
                     ("username", "desc") => usersQuery.OrderByDescending(u => u.UserName),
                     ("email", "asc") => usersQuery.OrderBy(u => u.Email),
                     ("email", "desc") => usersQuery.OrderByDescending(u => u.Email),
+                    ("lastlogin", "asc") => usersQuery.OrderBy(u => u.LastLoginAt ?? DateTime.MinValue),
+                    ("lastlogin", "desc") => usersQuery.OrderByDescending(u => u.LastLoginAt ?? DateTime.MinValue),
                     ("username", _) => usersQuery.OrderBy(u => u.UserName),
                     _ => usersQuery.OrderBy(u => u.UserName)
                 };
@@ -104,7 +108,7 @@ namespace WareHouseFileArchiver.Repositories
                             .ToListAsync();
             }
 
-            // Convert to DTOs
+            // Convert to DTOs - Enhanced with login information
             var userDtos = new List<UserDto>();
             foreach (var user in users)
             {
@@ -114,12 +118,15 @@ namespace WareHouseFileArchiver.Repositories
                     Id = user.Id,
                     Username = user.UserName,
                     Email = user.Email,
-                    Roles = roles
+                    Roles = roles,
+                    LastLoginAt = user.LastLoginAt,
+                    LastLoginFormatted = LoginUtils.FormatLastLogin(user.LastLoginAt),
+                    LoginStatus = LoginUtils.GetLoginStatus(user.LastLoginAt),
+                    DaysSinceLastLogin = LoginUtils.GetDaysSinceLastLogin(user.LastLoginAt)
                 });
             }
 
             return userDtos;
-
         }
 
         public async Task<UserDto?> GetByIdAsync(string id)
@@ -135,7 +142,11 @@ namespace WareHouseFileArchiver.Repositories
                 Id = user.Id,
                 Username = user.UserName,
                 Email = user.Email,
-                Roles = roles
+                Roles = roles,
+                LastLoginAt = user.LastLoginAt,
+                LastLoginFormatted = LoginUtils.FormatLastLogin(user.LastLoginAt),
+                LoginStatus = LoginUtils.GetLoginStatus(user.LastLoginAt),
+                DaysSinceLastLogin = LoginUtils.GetDaysSinceLastLogin(user.LastLoginAt)
             };
         }
 
@@ -153,7 +164,7 @@ namespace WareHouseFileArchiver.Repositories
 
             if (!updateResult.Succeeded)
                 return null;
-        
+
 
             var currentRoles = await userManager.GetRolesAsync(user);
             await userManager.RemoveFromRolesAsync(user, currentRoles);
@@ -168,5 +179,60 @@ namespace WareHouseFileArchiver.Repositories
                 Roles = dto.Roles
             };
         }
+
+        public static class LoginUtils
+        //Utility service for formatting and getting login information
+        {
+            public static string FormatLastLogin(DateTime? lastLoginAt)
+            {
+                if (lastLoginAt == null) return "Never logged in";
+                
+                // If the datetime appears to be UTC (based on your backend showing +05:30), 
+                // convert it to IST for display
+                DateTime displayTime;
+                
+                if (lastLoginAt.Value.Kind == DateTimeKind.Utc || 
+                    // Check if this looks like UTC time (5.5 hours behind expected IST)
+                    lastLoginAt.Value.Hour < 12 && DateTime.UtcNow.Hour > 12)
+                {
+                    // Convert UTC to IST (+5:30)
+                    var istZone = TimeZoneInfo.FindSystemTimeZoneById("India Standard Time");
+                    displayTime = TimeZoneInfo.ConvertTimeFromUtc(lastLoginAt.Value, istZone);
+                }
+                else
+                {
+                    // Already in IST or local time
+                    displayTime = lastLoginAt.Value;
+                }
+                
+                return displayTime.ToString("yyyy-MM-dd HH:mm:ss") + " IST";
+            }
+
+            public static string GetLoginStatus(DateTime? lastLoginAt)
+            {
+                if (lastLoginAt == null) return "Never logged in";
+
+                var daysSince = (DateTime.UtcNow - lastLoginAt.Value).Days;
+                
+
+                return daysSince switch
+                {
+                    0 => "Active today",
+                    1 => "Active yesterday",
+                    <= 7 => "Active this week",
+                    <= 30 => "Active this month",
+                    _ => "Inactive"
+                };
+            }
+            
+            public static int? GetDaysSinceLastLogin(DateTime? lastLoginAt)
+            {
+                if (lastLoginAt == null) return null;
+                return (DateTime.UtcNow - lastLoginAt.Value).Days;
+            }
+            
+        }
+
+        
     }
 }

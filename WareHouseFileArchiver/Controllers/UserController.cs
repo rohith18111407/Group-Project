@@ -28,7 +28,6 @@ namespace WareHouseFileArchiver.Controllers
             var validRoles = new[] { "Admin", "Staff" };
             if (role != null && !validRoles.Contains(role))
             {
-                // return BadRequest("Invalid role filter. Only 'Admin' or 'Staff' are allowed.");
                 return BadRequest(new
                 {
                     success = false,
@@ -38,8 +37,20 @@ namespace WareHouseFileArchiver.Controllers
                 });
             }
 
+            // Enhanced: Now supports sorting by lastlogin
+            var validSortFields = new[] { "username", "email", "lastlogin" };
+            if (sortBy != null && !validSortFields.Contains(sortBy.ToLower()))
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "Invalid sort field. Allowed values are: username, email, lastlogin",
+                    data = (object?)null,
+                    errors = new { SortBy = new[] { "Allowed values are 'username', 'email', or 'lastlogin'" } }
+                });
+            }
+
             var users = await userRepository.GetAllAsync(pageNumber, pageSize, role, sortBy, sortOrder);
-            // return Ok(users);
 
             return Ok(new
             {

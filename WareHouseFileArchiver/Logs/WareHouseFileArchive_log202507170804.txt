@@ -1,0 +1,4 @@
+2025-07-17 08:04:11.599 +05:30 [INF] Application is shutting down...
+2025-07-17 08:04:11.604 +05:30 [INF] Connection id "0HNE4D65ETNLK", Request id "0HNE4D65ETNLK:00000001": the application aborted the connection.
+2025-07-17 08:04:11.614 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-17 08:04:11.614 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=I8FZkDirQruVCAmxaAhGoQ - 101 null null 17148.1043ms

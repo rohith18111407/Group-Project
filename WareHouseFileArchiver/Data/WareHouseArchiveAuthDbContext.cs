@@ -8,10 +8,8 @@ namespace WareHouseFileArchiver.Data
    public class WareHouseArchiveAuthDbContext : IdentityDbContext<ApplicationUser>
     {
         public WareHouseArchiveAuthDbContext(DbContextOptions<WareHouseArchiveAuthDbContext> options) : base(options)
-        {
-            
+        { 
         }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);

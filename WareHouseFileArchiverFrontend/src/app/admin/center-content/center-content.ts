@@ -19,36 +19,36 @@ import { StatisticsComponent } from '../../statistics/statistics';
 export class CenterContentComponent implements OnChanges {
   @Input() view: 'dashboard' | 'files' | 'items' | 'users' | 'statistics' = 'dashboard';
 
+  // Items
   items: any[] = [];
   loading = false;
   error: string | null = null;
   itemSearchTerm = '';
   filteredItems: any[] = [];
-
   showEditItemForm = false;
   selectedItemToEdit: any = null;
-
-  users: any[] = [];
-  filteredUsers: any[] = [];
-
-  userSearchTerm = '';
-  selectedRoleFilter = '';
-
-  showEditUserForm = false;
-  selectedUserToEdit: any = null;
-
-
   sortBy: 'createdAt' | 'createdBy' | 'name' | 'category' = 'createdAt';
   isDescending = false;
-
   showAddItemForm = false;
+
+  // Users
+  users: any[] = [];
+  filteredUsers: any[] = [];
+  userSearchTerm = '';
+  selectedRoleFilter = '';
+  showEditUserForm = false;
+  selectedUserToEdit: any = null;
+  showAddUserForm = false;
+  
+  // NEW: User sorting properties for login information
+  userSortBy: 'username' | 'lastlogin' | 'role' = 'username';
+  userSortDescending = false;
 
   // Files
   files: any[] = [];
   fileSearchTerm = '';
   fileSortDescending = true;
   groupedFiles: { [category: string]: any[] } = {};
-
   showAddFileForm = false;
 
   constructor(private adminService: AdminService) { }
@@ -60,12 +60,12 @@ export class CenterContentComponent implements OnChanges {
     if (this.view === 'users') {
       this.fetchUsers();
     }
-
     if (this.view === 'files') {
       this.fetchFiles();
     }
   }
 
+  // ITEMS METHODS
   fetchItems() {
     this.loading = true;
     this.adminService.getAllItems(this.sortBy, this.isDescending).subscribe({
@@ -80,7 +80,6 @@ export class CenterContentComponent implements OnChanges {
       }
     });
   }
-
 
   toggleAddItemForm(show: boolean) {
     this.showAddItemForm = show;
@@ -140,6 +139,7 @@ export class CenterContentComponent implements OnChanges {
     this.fetchItems();
   }
 
+  // USERS METHODS
   fetchUsers() {
     this.loading = true;
     this.error = null;
@@ -157,8 +157,10 @@ export class CenterContentComponent implements OnChanges {
     });
   }
 
+  // ENHANCED: User filters with sorting for login information
   applyUserFilters() {
-    this.filteredUsers = this.users.filter(user => {
+    // First apply filters
+    let filtered = this.users.filter(user => {
       const matchesUsername = user.username
         .toLowerCase()
         .includes(this.userSearchTerm.toLowerCase());
@@ -169,6 +171,42 @@ export class CenterContentComponent implements OnChanges {
 
       return matchesUsername && matchesRole;
     });
+
+    // Then apply sorting
+    filtered = filtered.sort((a, b) => {
+      let comparison = 0;
+      
+      switch (this.userSortBy) {
+        case 'username':
+          comparison = a.username.localeCompare(b.username);
+          break;
+        case 'lastlogin':
+          const aTime = a.lastLoginAt ? new Date(a.lastLoginAt).getTime() : 0;
+          const bTime = b.lastLoginAt ? new Date(b.lastLoginAt).getTime() : 0;
+          comparison = aTime - bTime;
+          break;
+        case 'role':
+          const aRole = a.roles?.[0] || '';
+          const bRole = b.roles?.[0] || '';
+          comparison = aRole.localeCompare(bRole);
+          break;
+      }
+
+      return this.userSortDescending ? -comparison : comparison;
+    });
+
+    this.filteredUsers = filtered;
+  }
+
+  // NEW: User sorting method for login information
+  changeUserSort(field: 'username' | 'lastlogin' | 'role') {
+    if (this.userSortBy === field) {
+      this.userSortDescending = !this.userSortDescending;
+    } else {
+      this.userSortBy = field;
+      this.userSortDescending = false;
+    }
+    this.applyUserFilters();
   }
 
   onUserSearchChange(event: Event): void {
@@ -177,15 +215,12 @@ export class CenterContentComponent implements OnChanges {
     this.applyUserFilters();
   }
 
-
   onRoleFilterChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const role = selectElement.value;
     this.selectedRoleFilter = role;
     this.applyUserFilters();
   }
-
-  showAddUserForm = false;
 
   toggleAddUserForm(show: boolean) {
     this.showAddUserForm = show;
@@ -219,6 +254,7 @@ export class CenterContentComponent implements OnChanges {
     this.fetchUsers(); // Refresh user list
   }
 
+  // FILES METHODS
   fetchFiles() {
     this.loading = true;
     this.error = null;
@@ -269,7 +305,6 @@ export class CenterContentComponent implements OnChanges {
     }, {});
   }
 
-
   getFormattedSize(bytes: number): string {
     if (bytes < 1024) return `${bytes} B`;
     else if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
@@ -279,7 +314,6 @@ export class CenterContentComponent implements OnChanges {
   get groupedFileCategories(): string[] {
     return Object.keys(this.groupedFiles);
   }
-
 
   toggleAddFileForm(show: boolean) {
     this.showAddFileForm = show;
@@ -322,5 +356,4 @@ export class CenterContentComponent implements OnChanges {
       }
     });
   }
-
 }

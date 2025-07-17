@@ -6,6 +6,7 @@ using WareHouseFileArchiver.Interfaces;
 using WareHouseFileArchiver.Models.Domains;
 using WareHouseFileArchiver.Models.DTOs;
 using Microsoft.EntityFrameworkCore;
+using WareHouseFileArchiver.Repositories;
 
 namespace WareHouseFileArchiver.Controllers
 {
@@ -16,6 +17,7 @@ namespace WareHouseFileArchiver.Controllers
         private readonly ITokenRepository tokenRepository;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly SignInManager<ApplicationUser> signInManager;
+
 
 
         public AuthController(UserManager<ApplicationUser> userManager,
@@ -133,45 +135,111 @@ namespace WareHouseFileArchiver.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequestDto loginRequestDto)
         {
-            var user = await userManager.FindByEmailAsync(loginRequestDto.Username);
-            if (user != null)
+            try
             {
-                var checkPasswordResult = await userManager.CheckPasswordAsync(user, loginRequestDto.Password);
-                if (checkPasswordResult)
+                var user = await userManager.FindByEmailAsync(loginRequestDto.Username);
+                if (user == null)
                 {
-                    var roles = await userManager.GetRolesAsync(user);
-                    if (roles != null)
+                    return BadRequest(new
                     {
-                        var (jwtToken, jwtExpiry) = tokenRepository.CreateJWTToken(user, roles.ToList());
-                        var refreshToken = tokenRepository.GenerateRefreshToken();
+                        success = false,
+                        message = "Username or Password is incorrect",
+                        data = (object?)null,
+                        errors = new { Credentials = new[] { "Invalid username or password" } }
+                    });
+                }
 
-                        user.RefreshToken = refreshToken;
-                        user.RefreshTokenExpiryTime = DateTime.UtcNow.AddMinutes(15);
-                        user.LastLoginAt = DateTime.UtcNow;
-                        await userManager.UpdateAsync(user);
+                var checkPasswordResult = await userManager.CheckPasswordAsync(user, loginRequestDto.Password);
+                if (!checkPasswordResult)
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "Username or Password is incorrect", 
+                        data = (object?)null,
+                        errors = new { Credentials = new[] { "Invalid username or password" } }
+                    });
+                }
 
-                        var response = new LoginResponseDto
-                        {
-                            JwtToken = jwtToken,
-                            RefreshToken = refreshToken,
-                            Role = roles.FirstOrDefault() ?? "Unknown",
-                            JwtExpiryTime = jwtExpiry
-                        };
+                var roles = await userManager.GetRolesAsync(user);
+                if (roles == null || !roles.Any())
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "User has no assigned roles",
+                        data = (object?)null,
+                        errors = new { Roles = new[] { "No roles assigned to user" } }
+                    });
+                }
 
-                        return Ok(new
-                        {
-                            success = true,
-                            message = "Login successful",
-                            data = response,
-                            errors = (object?)null
-                        });
+                // Generate tokens
+                var (jwtToken, jwtExpiry) = tokenRepository.CreateJWTToken(user, roles.ToList());
+                var refreshToken = tokenRepository.GenerateRefreshToken();
+
+                // CRITICAL: Update LastLoginAt and other login info
+                var loginTime = DateTime.UtcNow;
+                
+                Console.WriteLine($"[LOGIN] Updating LastLoginAt for user {user.UserName} to {loginTime}");
+                
+                // Update user properties
+                user.RefreshToken = refreshToken;
+                user.RefreshTokenExpiryTime = loginTime.AddMinutes(15);
+                user.LastLoginAt = loginTime;
+
+                // Save changes to database
+                var updateResult = await userManager.UpdateAsync(user);
+                
+                if (!updateResult.Succeeded)
+                {
+                    Console.WriteLine($"[LOGIN ERROR] Failed to update user: {string.Join(", ", updateResult.Errors.Select(e => e.Description))}");
+                    
+                    // If UserManager update fails, don't fail the entire login
+                    // but log the error for debugging
+                    foreach (var error in updateResult.Errors)
+                    {
+                        Console.WriteLine($"[LOGIN ERROR] {error.Code}: {error.Description}");
                     }
                 }
+                else
+                {
+                    Console.WriteLine($"[LOGIN SUCCESS] LastLoginAt updated successfully for user {user.UserName}");
+                }
+
+                // Verify the update worked by fetching fresh data
+                var verifyUser = await userManager.FindByIdAsync(user.Id);
+                Console.WriteLine($"[LOGIN VERIFY] Database LastLoginAt: {verifyUser.LastLoginAt}");
+
+                var response = new LoginResponseDto
+                {
+                    JwtToken = jwtToken,
+                    RefreshToken = refreshToken,
+                    Role = roles.FirstOrDefault() ?? "Unknown",
+                    JwtExpiryTime = jwtExpiry
+                };
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Login successful",
+                    data = response,
+                    errors = (object?)null
+                });
             }
-
-            return BadRequest("Username or Password is incorrect");
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[LOGIN EXCEPTION] {ex.Message}");
+                Console.WriteLine($"[LOGIN EXCEPTION] Stack: {ex.StackTrace}");
+                
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "An error occurred during login",
+                    data = (object?)null,
+                    errors = new { Exception = new[] { ex.Message } }
+                });
+            }
         }
-
 
         // POST: /api/v1/auth/logout
         [Authorize]
@@ -350,22 +418,68 @@ namespace WareHouseFileArchiver.Controllers
         [HttpGet("LastLogin")]
         public async Task<IActionResult> GetUserLastLogin()
         {
-            var users = await userManager.Users
-                .Select(u => new
+            try
+            {
+                Console.WriteLine("[LASTLOGIN] Fetching fresh user data from database");
+                
+                // Force a fresh database query with no caching
+                var users = await userManager.Users
+                    .AsNoTracking() // Disable Entity Framework caching
+                    .OrderByDescending(u => u.LastLoginAt ?? DateTime.MinValue)
+                    .Select(u => new
+                    {
+                        u.Id,
+                        u.UserName,
+                        u.Email,
+                        u.LastLoginAt
+                    })
+                    .ToListAsync();
+
+                Console.WriteLine($"[LASTLOGIN] Retrieved {users.Count} users from database");
+                
+                // Log the raw data for debugging
+                foreach (var user in users.Take(3)) // Log first 3 users
+                {
+                    Console.WriteLine($"[LASTLOGIN] User: {user.UserName}, LastLoginAt: {user.LastLoginAt}");
+                }
+
+                // Enhanced users with formatted login information
+                var enhancedUsers = users.Select(u => new
                 {
                     u.Id,
                     u.UserName,
                     u.Email,
-                    u.LastLoginAt
-                })
-                .ToListAsync();
+                    u.LastLoginAt,
+                    LastLoginFormatted = UserRepository.LoginUtils.FormatLastLogin(u.LastLoginAt),
+                    LoginStatus = UserRepository.LoginUtils.GetLoginStatus(u.LastLoginAt),
+                    DaysSinceLastLogin = UserRepository.LoginUtils.GetDaysSinceLastLogin(u.LastLoginAt),
+                }).ToList();
 
-            return Ok(new
+                Console.WriteLine("[LASTLOGIN] Enhanced user data prepared");
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Last login times retrieved",
+                    data = enhancedUsers,
+                    // Add debug info
+                    debug = new
+                    {
+                        QueryTime = DateTime.UtcNow,
+                        TotalUsers = users.Count
+                    }
+                });
+            }
+            catch (Exception ex)
             {
-                success = true,
-                message = "Last login times retrieved",
-                data = users
-            });
+                Console.WriteLine($"[LASTLOGIN ERROR] {ex.Message}");
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Failed to retrieve last login information",
+                    errors = new { Exception = new[] { ex.Message } }
+                });
+            }
         }
 
     }
