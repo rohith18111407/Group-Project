@@ -60,7 +60,7 @@ namespace WareHouseFileArchiver.Repositories
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
-            var expires = DateTime.UtcNow.AddMinutes(20); // JWT expiry
+            var expires = DateTime.UtcNow.AddMinutes(2); // JWT expiry
 
             var token = new JwtSecurityToken(
                 configuration["Jwt:Issuer"],
