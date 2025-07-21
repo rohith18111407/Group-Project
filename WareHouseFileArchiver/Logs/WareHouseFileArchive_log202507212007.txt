@@ -1,0 +1,23 @@
+2025-07-21 20:07:01.984 +05:30 [INF] Executed DbCommand (5ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."Category", a."CreatedAt", a."CreatedBy", a."Description", a."FileExtension", a."FileName", a."FilePath", a."FileSizeInBytes", a."IsProcessed", a."IsScheduled", a."ItemId", a."UpdatedAt", a."UpdatedBy", a."VersionNumber", i."Id", i."Category", i."CreatedAt", i."CreatedBy", i."Description", i."Name", i."UpdatedAt", i."UpdatedBy"
+FROM "ArchiveFiles" AS a
+LEFT JOIN "Items" AS i ON a."ItemId" = i."Id"
+WHERE a."IsScheduled" AND NOT (a."IsProcessed") AND a."CreatedAt" <= now()
+2025-07-21 20:07:31.990 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."Category", a."CreatedAt", a."CreatedBy", a."Description", a."FileExtension", a."FileName", a."FilePath", a."FileSizeInBytes", a."IsProcessed", a."IsScheduled", a."ItemId", a."UpdatedAt", a."UpdatedBy", a."VersionNumber", i."Id", i."Category", i."CreatedAt", i."CreatedBy", i."Description", i."Name", i."UpdatedAt", i."UpdatedBy"
+FROM "ArchiveFiles" AS a
+LEFT JOIN "Items" AS i ON a."ItemId" = i."Id"
+WHERE a."IsScheduled" AND NOT (a."IsProcessed") AND a."CreatedAt" <= now()
+2025-07-21 20:07:35.085 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-21 20:07:35.086 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=ZrrrfZFNpNTDKJEizBsnKg - 101 null null 669830.2271ms
+2025-07-21 20:07:35.097 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null null
+2025-07-21 20:07:35.097 +05:30 [INF] CORS policy execution successful.
+2025-07-21 20:07:35.098 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 204 null null 1.4805ms
+2025-07-21 20:07:35.101 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-21 20:07:35.101 +05:30 [INF] CORS policy execution successful.
+2025-07-21 20:07:35.108 +05:30 [INF] Executing endpoint '/notificationhub/negotiate'
+2025-07-21 20:07:35.124 +05:30 [INF] Executed endpoint '/notificationhub/negotiate'
+2025-07-21 20:07:35.125 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 200 316 application/json 23.9997ms
+2025-07-21 20:07:35.158 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/notificationhub?id=EYWU2yx7Fnd7KS-za0i_ng - null null
+2025-07-21 20:07:35.164 +05:30 [INF] CORS policy execution successful.
+2025-07-21 20:07:35.164 +05:30 [INF] Executing endpoint '/notificationhub'

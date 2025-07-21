@@ -78,6 +78,18 @@ export class AdminService {
         return this.http.get(url, { headers: this.getAuthHeaders(), responseType: 'blob' });
     }
 
+    bulkDownloadFiles(fileIds: string[], zipFileName?: string): Observable<Blob> {
+        const request = {
+            fileIds: fileIds,
+            zipFileName: zipFileName || `ArchiveFiles_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}`
+        };
+
+        return this.http.post(`${this.baseUrl}/files/bulk-download`, request, {
+            headers: this.getAuthHeaders(),
+            responseType: 'blob'
+        });
+    }
+
     // New methods for scheduled uploads
     getScheduledFiles(): Observable<any[]> {
         return this.http.get<any>(`${this.baseUrl}/files/scheduled`, { headers: this.getAuthHeaders() })

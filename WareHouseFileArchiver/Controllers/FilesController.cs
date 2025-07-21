@@ -358,6 +358,148 @@ namespace WareHouseFileArchiver.Controllers
         }
 
         [Authorize(Roles = "Admin,Staff")]
+        [HttpPost("bulk-download")]
+        public async Task<IActionResult> BulkDownload([FromBody] BulkDownloadRequestDto request)
+        {
+            if (request.FileIds == null || !request.FileIds.Any())
+            {
+                return BadRequest(new
+                {
+                    success = false,
+                    message = "No files selected for download",
+                    data = (object?)null,
+                    errors = new { FileIds = new[] { "At least one file must be selected." } }
+                });
+            }
+
+            try
+            {
+                var files = new List<ArchiveFile>();
+                var missingFiles = new List<Guid>();
+
+                // Fetch all files by IDs
+                foreach (var fileId in request.FileIds)
+                {
+                    var file = await archiveFileRepository.GetFileByIdAsync(fileId);
+                    if (file == null || !System.IO.File.Exists(file.FilePath))
+                    {
+                        missingFiles.Add(fileId);
+                    }
+                    else
+                    {
+                        files.Add(file);
+                    }
+                }
+
+                if (missingFiles.Any())
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        message = "Some files could not be found",
+                        data = (object?)null,
+                        errors = new { MissingFiles = missingFiles.ToArray() }
+                    });
+                }
+
+                if (!files.Any())
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        message = "No valid files found for download",
+                        data = (object?)null,
+                        errors = (object?)null
+                    });
+                }
+
+                // Get user info for logging
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var user = await userManager.FindByIdAsync(userId);
+                var downloadedBy = user?.UserName ?? "Unknown";
+
+                // Create a zip file for bulk download
+                using var memoryStream = new MemoryStream();
+                using (var archive = new ZipArchive(memoryStream, ZipArchiveMode.Create, true))
+                {
+                    var fileNameCounts = new Dictionary<string, int>();
+
+                    foreach (var file in files)
+                    {
+                        try
+                        {
+                            // Handle duplicate file names by adding a counter
+                            var fileName = $"{file.FileName}{file.FileExtension}";
+                            if (fileNameCounts.ContainsKey(fileName))
+                            {
+                                fileNameCounts[fileName]++;
+                                var nameWithoutExt = Path.GetFileNameWithoutExtension(fileName);
+                                var extension = Path.GetExtension(fileName);
+                                fileName = $"{nameWithoutExt}_({fileNameCounts[fileName]}){extension}";
+                            }
+                            else
+                            {
+                                fileNameCounts[fileName] = 0;
+                            }
+
+                            // Create entry in ZIP
+                            var zipEntry = archive.CreateEntry(fileName, CompressionLevel.Optimal);
+
+                            using var zipStream = zipEntry.Open();
+                            using var fileStream = new FileStream(file.FilePath, FileMode.Open, FileAccess.Read);
+                            await fileStream.CopyToAsync(zipStream);
+
+                            // Log individual file download
+                            var log = new FileDownloadLog
+                            {
+                                Id = Guid.NewGuid(),
+                                ArchiveFileId = file.Id,
+                                DownloadedBy = downloadedBy,
+                                DownloadedAt = DateTime.UtcNow
+                            };
+                            await archiveFileRepository.LogDownloadAsync(log);
+                        }
+                        catch (Exception ex)
+                        {
+                            // Log error but continue with other files
+                            Console.WriteLine($"Error adding file {file.FileName} to ZIP: {ex.Message}");
+                        }
+                    }
+                }
+
+                // Generate a zip file name
+                var zipFileName = string.IsNullOrEmpty(request.ZipFileName)
+                    ? $"ArchiveFiles_{DateTime.UtcNow:yyyyMMdd_HHmmss}.zip"
+                    : $"{request.ZipFileName}.zip";
+                
+                // Send notification about bulk download
+                await hubContext.Clients.All.SendAsync("ReceiveNotification", new
+                {
+                    Action = "Bulk Files Downloaded",
+                    FileCount = files.Count,
+                    ZipFileName = zipFileName,
+                    DownloadedBy = downloadedBy,
+                    DownloadedAt = DateTime.UtcNow,
+                    Files = files.Select(f => new { f.Id, f.FileName, f.FileExtension }).ToArray()
+                });
+
+                // Return ZIP file
+                memoryStream.Position = 0;
+                return File(memoryStream.ToArray(), "application/zip", zipFileName);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "An error occurred while processing the bulk download",
+                    data = (object?)null,
+                    errors = new { File = new[] { ex.Message } }
+                });
+            }
+        }
+
+        [Authorize(Roles = "Admin,Staff")]
         [HttpGet("by-item/{itemId}")]
         public async Task<IActionResult> GetByItemId(Guid itemId)
         {
