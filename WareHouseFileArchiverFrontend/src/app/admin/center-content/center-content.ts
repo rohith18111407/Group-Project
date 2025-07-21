@@ -9,15 +9,16 @@ import { EditItemComponent } from "../edit-item/edit-item";
 import { DashboardComponent } from '../../dashboard/dashboard';
 import { AddFileComponent } from "../add-file/add-file";
 import { StatisticsComponent } from '../../statistics/statistics';
+import { ScheduledUploadsComponent } from "../scheduled-uploads/scheduled-uploads";
 
 @Component({
   selector: 'app-center-content',
-  imports: [CommonModule, AddItemComponent, AddUserComponent, EditUserComponent, EditItemComponent, DashboardComponent, AddFileComponent, StatisticsComponent],
+  imports: [CommonModule, AddItemComponent, AddUserComponent, EditUserComponent, EditItemComponent, DashboardComponent, AddFileComponent, StatisticsComponent, ScheduledUploadsComponent],
   templateUrl: './center-content.html',
   styleUrl: './center-content.css'
 })
 export class CenterContentComponent implements OnChanges {
-  @Input() view: 'dashboard' | 'files' | 'items' | 'users' | 'statistics' = 'dashboard';
+  @Input() view: 'dashboard' | 'files' | 'items' | 'users' | 'statistics' | 'scheduled' = 'dashboard';
 
   items: any[] = [];
   loading = false;
@@ -225,6 +226,7 @@ export class CenterContentComponent implements OnChanges {
 
     this.adminService.getAllFiles().subscribe({
       next: res => {
+        // set only processed files
         this.files = res;
         this.applyFileFilters(); // Apply filters and group
         this.loading = false;

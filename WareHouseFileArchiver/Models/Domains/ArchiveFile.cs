@@ -30,6 +30,10 @@ namespace WareHouseFileArchiver.Models.Domains
         public DateTime? UpdatedAt { get; set; }
         public string? UpdatedBy { get; set; }
 
+        // Fields for scheduled update
+        public bool IsScheduled { get; set; } = false;
+        public bool IsProcessed { get; set; } = false; // For scheduled files
+
         [NotMapped]
         public IFormFile? File { get; set; }
     }

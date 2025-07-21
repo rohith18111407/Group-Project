@@ -16,7 +16,8 @@ namespace WareHouseFileArchiver.Repositories
 
         public async Task<ArchiveFile> UploadAsync(ArchiveFile archiveFile)
         {
-            archiveFile.CreatedAt = DateTime.UtcNow;
+            if (archiveFile.CreatedAt == default(DateTime))
+                archiveFile.CreatedAt = DateTime.UtcNow;
 
             int version = 1;
             bool isUnique = false;
@@ -91,6 +92,7 @@ namespace WareHouseFileArchiver.Repositories
         {
             return await dbContext.ArchiveFiles
                 .Include(f => f.Item)
+                .Where(f => !f.IsScheduled || f.IsProcessed) // Only show non-scheduled files OR processed scheduled files
                 .OrderByDescending(f => f.CreatedAt)
                 .ToListAsync();
         }
@@ -114,6 +116,46 @@ namespace WareHouseFileArchiver.Repositories
             await dbContext.SaveChangesAsync();
         }
 
+        // Scheduled File upload methods
+        public async Task<IEnumerable<ArchiveFile>> GetScheduledFilesAsync()
+        {
+            return await dbContext.ArchiveFiles
+                .Where(f => f.IsScheduled)
+                .Include(f => f.Item)
+                .OrderBy(f => f.CreatedAt)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<ArchiveFile>> GetPendingScheduledFilesAsync()
+        {
+            return await dbContext.ArchiveFiles
+                .Where(f => f.IsScheduled && !f.IsProcessed && f.CreatedAt <= DateTime.UtcNow)
+                .Include(f => f.Item)
+                .ToListAsync();
+        }
+
+        public async Task<ArchiveFile?> GetScheduledFileByIdAsync(Guid id)
+        {
+            return await dbContext.ArchiveFiles
+                .Include(f => f.Item)
+                .FirstOrDefaultAsync(f => f.Id == id && f.IsScheduled);
+        }
+
+        public async Task UpdateScheduledFileAsync(ArchiveFile archiveFile)
+        {
+            dbContext.ArchiveFiles.Update(archiveFile);
+            await dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteScheduledFileAsync(Guid id)
+        {
+            var file = await dbContext.ArchiveFiles.FindAsync(id);
+            if (file != null)
+            {
+                dbContext.ArchiveFiles.Remove(file);
+                await dbContext.SaveChangesAsync();
+            }
+        }
 
     }
 }

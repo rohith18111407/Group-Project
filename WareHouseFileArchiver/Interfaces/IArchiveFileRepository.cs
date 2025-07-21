@@ -16,5 +16,11 @@ namespace WareHouseFileArchiver.Interfaces
         Task DeleteAsync(ArchiveFile file);
         Task LogDownloadAsync(FileDownloadLog log);
 
+        // Scheduled File upload methods
+        Task<IEnumerable<ArchiveFile>> GetScheduledFilesAsync();
+        Task<IEnumerable<ArchiveFile>> GetPendingScheduledFilesAsync();
+        Task<ArchiveFile?> GetScheduledFileByIdAsync(Guid id);
+        Task UpdateScheduledFileAsync(ArchiveFile archiveFile);
+        Task DeleteScheduledFileAsync(Guid id);
     }
 }

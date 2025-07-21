@@ -77,4 +77,14 @@ export class AdminService {
         const url = `${this.baseUrl}/files/${filename}/v${version}`;
         return this.http.get(url, { headers: this.getAuthHeaders(), responseType: 'blob' });
     }
+
+    // New methods for scheduled uploads
+    getScheduledFiles(): Observable<any[]> {
+        return this.http.get<any>(`${this.baseUrl}/files/scheduled`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
+
+    cancelScheduledUpload(id: string): Observable<any> {
+        return this.http.delete(`${this.baseUrl}/files/scheduled/${id}`, { headers: this.getAuthHeaders() });
+    }
 }

@@ -13,4 +13,6 @@ export interface ArchiveFile {
   createdBy: string;
   updatedAt?: string;
   updatedBy?: string;
+  isScheduled: boolean;
+  isProcessed: boolean;
 }

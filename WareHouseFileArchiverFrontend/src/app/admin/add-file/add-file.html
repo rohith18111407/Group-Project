@@ -53,8 +53,41 @@
     </div>
   </div>
 
+  <!-- Scheduling Section -->
+  <div class="mb-3">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" formControlName="isScheduled" id="isScheduled" (change)="onScheduledChange()">
+      <label class="form-check-label" for="isScheduled">
+        <i class="bi bi-clock-history"></i> Schedule for later upload
+      </label>
+    </div>
+  </div>
+
+  <div class="row mb-3" *ngIf="fileForm.get('isScheduled')?.value">
+    <div class="col-md-6">
+      <label class="form-label">Schedule Date *</label>
+      <input type="date" class="form-control" formControlName="scheduledDate" 
+             [min]="getTodayDate()" />
+      <div class="text-danger small" *ngIf="fileForm.get('isScheduled')?.value && !fileForm.get('scheduledDate')?.value">
+        Schedule date is required when scheduling is enabled.
+      </div>
+    </div>
+    <div class="col-md-6">
+      <label class="form-label">Schedule Time *</label>
+      <input type="time" class="form-control" formControlName="scheduledTime" />
+      <div class="text-danger small" *ngIf="fileForm.get('isScheduled')?.value && !fileForm.get('scheduledTime')?.value">
+        Schedule time is required when scheduling is enabled.
+      </div>
+    </div>
+  </div>
+
   <div class="d-flex gap-2">
-    <button type="submit" class="btn btn-danger" [disabled]="fileForm.invalid">Upload</button>
-    <button type="button" class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+    <button type="submit" class="btn btn-danger" [disabled]="fileForm.invalid">
+      <i class="bi" [class.bi-upload]="!fileForm.get('isScheduled')?.value" [class.bi-clock-history]="fileForm.get('isScheduled')?.value"></i>
+      {{ fileForm.get('isScheduled')?.value ? 'Schedule Upload' : 'Upload' }}
+    </button>
+    <button type="button" class="btn btn-secondary" (click)="onCancel()">
+      <i class="bi bi-x-circle"></i> Cancel
+    </button>
   </div>
 </form>

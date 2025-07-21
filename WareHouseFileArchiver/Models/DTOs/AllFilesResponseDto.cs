@@ -19,6 +19,10 @@ namespace WareHouseFileArchiver.Models.DTOs
         public string? CreatedBy { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string? UpdatedBy { get; set; }
+
+        // Scheduled upload properties
+        public bool IsScheduled { get; set; }
+        public bool IsProcessed { get; set; }
     }
 
 }

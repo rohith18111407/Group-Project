@@ -11,6 +11,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using WareHouseFileArchiver.Interfaces;
 using WareHouseFileArchiver.Repositories;
+using WareHouseFileArchiver.Services;
 using WareHouseFileArchiver.Models.Domains;
 using System.Text.Json.Serialization;
 using Serilog;
@@ -125,6 +126,9 @@ builder.Services.AddControllers()
     });
 
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
+
+// Schedule upload Background Service
+builder.Services.AddHostedService<ScheduledUploadProcessorService>();
 
 builder.Services.AddSignalR();
 
