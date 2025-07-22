@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { LeftSidebarComponent } from "../left-sidebar/left-sidebar";
 import { CenterContentComponent } from "../center-content/center-content";
-import { RightSidebarCompponent } from "../right-sidebar/right-sidebar";
+import { RightSidebarComponent } from "../right-sidebar/right-sidebar";
 import { AdminService } from '../../services/admin.service';
 
 @Component({
   selector: 'app-admin-dashboard',
-  imports: [CommonModule, LeftSidebarComponent, CenterContentComponent, RightSidebarCompponent],
+  imports: [CommonModule, LeftSidebarComponent, CenterContentComponent, RightSidebarComponent],
   templateUrl: './admin-dashboard.html',
   styleUrl: './admin-dashboard.css'
 })

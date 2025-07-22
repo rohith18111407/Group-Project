@@ -77,4 +77,110 @@ export class AdminService {
         const url = `${this.baseUrl}/files/${filename}/v${version}`;
         return this.http.get(url, { headers: this.getAuthHeaders(), responseType: 'blob' });
     }
+
+    // ARCHIVE METHODS
+    
+    /**
+     * Get all archived files
+     */
+    getArchivedFiles(): Observable<any[]> {
+        return this.http.get<any>(`${this.baseUrl}/archive/files`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
+
+    /**
+     * Get archived files by admin name
+     */
+    getArchivedFilesByAdmin(adminName: string): Observable<any[]> {
+        return this.http.get<any>(`${this.baseUrl}/archive/files/by-admin/${adminName}`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
+
+    /**
+     * Unarchive a file (Admin only)
+     */
+    unarchiveFile(fileId: string): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/archive/files/${fileId}/unarchive`, {}, { headers: this.getAuthHeaders() });
+    }
+
+    /**
+     * Archive a file manually (Admin only)
+     */
+    archiveFileManually(fileId: string, reason: string): Observable<any> {
+        return this.http.post<any>(`${this.baseUrl}/archive/files/${fileId}/archive`, { reason }, { headers: this.getAuthHeaders() });
+    }
+
+    /**
+     * Get archival statistics
+     */
+    getArchivalStats(): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/archive/stats`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
+
+    /**
+     * Trigger inactive admin archival manually
+     */
+    triggerInactiveAdminArchival(inactiveDaysThreshold?: number): Observable<any> {
+        const payload = inactiveDaysThreshold ? { inactiveDaysThreshold } : {};
+        return this.http.post<any>(`${this.baseUrl}/archive/admin-inactivity/trigger`, payload, { headers: this.getAuthHeaders() });
+    }
+
+    /**
+     * Preview inactive admin archival
+     */
+    previewInactiveAdminArchival(inactiveDaysThreshold: number = 30): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/archive/admin-inactivity/preview?inactiveDaysThreshold=${inactiveDaysThreshold}`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
+
+    /**
+     * Get inactive admins
+     */
+    getInactiveAdmins(inactiveDaysThreshold: number = 30): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/archive/admin-inactivity/inactive-admins?inactiveDaysThreshold=${inactiveDaysThreshold}`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
+
+    /**
+     * Trigger general inactivity archival
+     */
+    triggerGeneralInactivityArchival(inactiveDaysThreshold?: number): Observable<any> {
+        const payload = inactiveDaysThreshold ? { inactiveDaysThreshold } : {};
+        return this.http.post<any>(`${this.baseUrl}/archive/general-inactivity/trigger`, payload, { headers: this.getAuthHeaders() });
+    }
+
+    /**
+     * Bulk unarchive files (Admin only) - Frontend implementation
+     * Note: This uses individual unarchive calls until backend bulk endpoint is implemented
+     */
+    bulkUnarchiveFiles(fileIds: string[]): Observable<any> {
+        // For now, we'll handle bulk operations on the frontend
+        // In the future, you can add a backend endpoint for bulk operations
+        return new Observable(observer => {
+            const results = { success: 0, failed: 0, total: fileIds.length };
+            let completed = 0;
+
+            fileIds.forEach(fileId => {
+                this.unarchiveFile(fileId).subscribe({
+                    next: (response) => {
+                        results.success++;
+                        completed++;
+                        if (completed === fileIds.length) {
+                            observer.next(results);
+                            observer.complete();
+                        }
+                    },
+                    error: (error) => {
+                        results.failed++;
+                        completed++;
+                        if (completed === fileIds.length) {
+                            observer.next(results);
+                            observer.complete();
+                        }
+                    }
+                });
+            });
+        });
+    }
 }

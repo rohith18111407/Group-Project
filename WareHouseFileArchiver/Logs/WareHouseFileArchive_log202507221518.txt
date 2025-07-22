@@ -1,0 +1,21 @@
+2025-07-22 15:18:45.399 +05:30 [INF] User profile is available. Using '/Users/aditirajesh/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
+2025-07-22 15:18:45.499 +05:30 [INF] Admin Archival Service started. Check interval: "1.00:00:00", Threshold: 30 days
+2025-07-22 15:18:45.502 +05:30 [INF] Starting admin inactivity check at "2025-07-22T09:48:45.5025580Z"
+2025-07-22 15:18:45.633 +05:30 [INF] Checking for admins inactive since "2025-06-22T09:48:45.6333670Z"
+2025-07-22 15:18:46.828 +05:30 [INF] Now listening on: http://localhost:5239
+2025-07-22 15:18:46.828 +05:30 [INF] Application started. Press Ctrl+C to shut down.
+2025-07-22 15:18:46.828 +05:30 [INF] Hosting environment: Development
+2025-07-22 15:18:46.828 +05:30 [INF] Content root path: /Users/aditirajesh/Desktop/Group-Project/WareHouseFileArchiver
+2025-07-22 15:18:47.116 +05:30 [INF] Executed DbCommand (59ms) [Parameters=[@__normalizedRoleName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ConcurrencyStamp", a."Name", a."NormalizedName"
+FROM "AspNetRoles" AS a
+WHERE a."NormalizedName" = @__normalizedRoleName_0
+LIMIT 2
+2025-07-22 15:18:47.237 +05:30 [INF] Executed DbCommand (7ms) [Parameters=[@__role_Id_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a0."Id", a0."AccessFailedCount", a0."ConcurrencyStamp", a0."Email", a0."EmailConfirmed", a0."LastLoginAt", a0."LockoutEnabled", a0."LockoutEnd", a0."NormalizedEmail", a0."NormalizedUserName", a0."PasswordHash", a0."PhoneNumber", a0."PhoneNumberConfirmed", a0."RefreshToken", a0."RefreshTokenExpiryTime", a0."SecurityStamp", a0."TwoFactorEnabled", a0."UserName"
+FROM "AspNetUserRoles" AS a
+INNER JOIN "AspNetUsers" AS a0 ON a."UserId" = a0."Id"
+WHERE a."RoleId" = @__role_Id_0
+2025-07-22 15:18:47.284 +05:30 [INF] Found 1 total admins, 0 are inactive
+2025-07-22 15:18:47.284 +05:30 [INF] No inactive admins found for archival
+2025-07-22 15:18:47.288 +05:30 [INF] Completed admin inactivity check. Next check in "1.00:00:00"

@@ -14,9 +14,14 @@ namespace WareHouseFileArchiver.Repositories
             this.dbContext = dbContext;
         }
 
-        public async Task<IEnumerable<FileExtensionStatDto>> GetFileExtensionStatsAsync()
+        public async Task<IEnumerable<FileExtensionStatDto>> GetFileExtensionStatsAsync(bool includeArchived = false)
         {
-            var groupedData = await dbContext.ArchiveFiles
+            var query = dbContext.ArchiveFiles.AsQueryable();
+            
+            if (!includeArchived)
+                query = query.Where(f => !f.IsArchivedDueToInactivity);
+
+            var groupedData = await query
                 .GroupBy(f => f.FileExtension)
                 .Select(g => new
                 {
@@ -61,7 +66,6 @@ namespace WareHouseFileArchiver.Repositories
             };
         }
 
-
         public async Task<IEnumerable<ActivityLogDto>> GetRecentActivitiesAsync(int count)
         {
             var uploads = await dbContext.ArchiveFiles
@@ -93,11 +97,16 @@ namespace WareHouseFileArchiver.Repositories
                 .Take(count);
         }
 
-
-        public async Task<IEnumerable<RecentFileDto>> GetRecentFilesAsync(int count)
+        public async Task<IEnumerable<RecentFileDto>> GetRecentFilesAsync(int count, bool includeArchived = false)
         {
-            var files = await dbContext.ArchiveFiles
+            var query = dbContext.ArchiveFiles
                 .Include(f => f.Item)
+                .AsQueryable();
+
+            if (!includeArchived)
+                query = query.Where(f => !f.IsArchivedDueToInactivity);
+
+            var files = await query
                 .OrderByDescending(f => f.CreatedAt)
                 .Take(count)
                 .ToListAsync();
@@ -126,5 +135,8 @@ namespace WareHouseFileArchiver.Repositories
                 CreatedAt = i.CreatedAt
             });
         }
+
+
     }
+
 }

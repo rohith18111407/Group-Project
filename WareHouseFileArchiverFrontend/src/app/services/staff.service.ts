@@ -45,4 +45,46 @@ export class StaffService {
         const url = `${this.baseUrl}/files/${filename}/v${version}`;
         return this.http.get(url, { headers: this.getAuthHeaders(), responseType: 'blob' });
     }
+
+    // ARCHIVE METHODS (Read-only for Staff)
+    
+    /**
+     * Get all archived files (Staff can view)
+     */
+    getArchivedFiles(): Observable<any[]> {
+        return this.http.get<any>(`${this.baseUrl}/archive/files`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
+
+    /**
+     * Get archived files by admin name (Staff can view)
+     */
+    getArchivedFilesByAdmin(adminName: string): Observable<any[]> {
+        return this.http.get<any>(`${this.baseUrl}/archive/files/by-admin/${adminName}`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
+
+    /**
+     * Get archival statistics (Staff can view)
+     */
+    getArchivalStats(): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/archive/stats`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
+
+    /**
+     * Preview inactive admin archival (Staff can view)
+     */
+    previewInactiveAdminArchival(inactiveDaysThreshold: number = 30): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/archive/admin-inactivity/preview?inactiveDaysThreshold=${inactiveDaysThreshold}`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
+
+    /**
+     * Get inactive admins (Staff can view)
+     */
+    getInactiveAdmins(inactiveDaysThreshold: number = 30): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/archive/admin-inactivity/inactive-admins?inactiveDaysThreshold=${inactiveDaysThreshold}`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
 }

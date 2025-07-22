@@ -1,8 +1,0 @@
-2025-07-16 18:22:17.360 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
-2025-07-16 18:22:17.362 +05:30 [INF] Executed endpoint '/notificationhub'
-2025-07-16 18:22:17.707 +05:30 [INF] Executing endpoint '/notificationhub/negotiate'
-2025-07-16 18:22:17.707 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=QixF4R_IlMx286SpOeTSbQ - 101 null null 14831.3775ms
-2025-07-16 18:22:17.708 +05:30 [INF] Executed endpoint '/notificationhub/negotiate'
-2025-07-16 18:22:17.708 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 200 316 application/json 348.2759ms
-2025-07-16 18:22:17.715 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/notificationhub?id=DlEqZVSsSNSWqvI4QK0mVw - null null
-2025-07-16 18:22:17.716 +05:30 [INF] Executing endpoint '/notificationhub'

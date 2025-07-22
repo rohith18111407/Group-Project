@@ -28,6 +28,12 @@ namespace WareHouseFileArchiver.Migrations.WareHouseDb
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
+                    b.Property<DateTime?>("ArchivedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("ArchivedReason")
+                        .HasColumnType("text");
+
                     b.Property<string>("Category")
                         .IsRequired()
                         .HasColumnType("text");
@@ -55,6 +61,9 @@ namespace WareHouseFileArchiver.Migrations.WareHouseDb
 
                     b.Property<long>("FileSizeInBytes")
                         .HasColumnType("bigint");
+
+                    b.Property<bool>("IsArchivedDueToInactivity")
+                        .HasColumnType("boolean");
 
                     b.Property<Guid?>("ItemId")
                         .HasColumnType("uuid");

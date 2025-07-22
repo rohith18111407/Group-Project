@@ -1,6 +1,17 @@
 <div class="container mt-4">
   <h3 class="text-primary">Welcome 👋</h3>
 
+  @if (loading) {
+  <div class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+  } @else if (error) {
+  <div class="alert alert-danger text-center">{{ error }}</div>
+  } @else {
+
+  <!-- Active Item Details -->
   <h5 class="mb-3">Item Details</h5>
   <div class="row row-cols-1 row-cols-md-3 g-4 mt-3">
     @for (card of itemCards; track card.name) {
@@ -17,13 +28,27 @@
     }
   </div>
 
+  <!-- File Category Chart -->
   <div class="row mt-5">
     <div class="col-12">
       <h5 class="mb-3">File Category Space Usage</h5>
-      <canvas baseChart
-              [data]="pieChartData"
-              [type]="'pie'">
-      </canvas>
+      <div class="card shadow-sm">
+        <div class="card-body">
+          @if (pieLabels.length > 0) {
+          <canvas baseChart
+                  [data]="pieChartData"
+                  [type]="'pie'">
+          </canvas>
+          } @else {
+          <div class="text-center text-muted">
+            <i class="bi bi-pie-chart"></i>
+            <p>No files to display</p>
+          </div>
+          }
+        </div>
+      </div>
     </div>
   </div>
+
+  }
 </div>

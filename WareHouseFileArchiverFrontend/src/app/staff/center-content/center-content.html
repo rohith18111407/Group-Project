@@ -10,7 +10,6 @@
 </div>
 
 <div class="d-flex gap-2 mb-3 flex-wrap">
-
     <button class="btn btn-outline-secondary btn-sm" (click)="changeSort('createdAt')">
         Sort by Time
         <i class="bi" [class.bi-sort-down]="!isDescending" [class.bi-sort-up]="isDescending"
@@ -66,8 +65,6 @@
 }
 }
 
-
-
 @if (view === 'users') {
 <div class="d-flex justify-content-between align-items-center mb-3 gap-3 flex-wrap">
     <h5 class="mb-0">All Users</h5>
@@ -81,7 +78,6 @@
         <option value="Staff">Staff</option>
     </select>
 </div>
-
 
 @if (loading) {
 <div class="text-center">
@@ -128,7 +124,16 @@
     </button>
 </div>
 
+<!-- Archive Toggle Button for Staff -->
+<div class="mb-2">
+    <button class="btn btn-outline-info" (click)="toggleArchivedFiles()">
+        <i class="bi bi-archive"></i> 
+        {{ showArchivedFiles ? 'Hide' : 'Show' }} Recently Archived Files
+    </button>
+</div>
 
+<!-- Active Files Section -->
+@if (!showArchivedFiles) {
 @if (loading) {
 <div class="text-center">
     <div class="spinner-border text-primary" role="status">
@@ -179,17 +184,94 @@
                 </table>
             </div>
             }
-
         </tbody>
     </table>
 </div>
 }
 }
 
+<!-- Archived Files Section (Staff - Read Only) -->
+@if (showArchivedFiles) {
+<div class="archive-section">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h6 class="text-muted">
+            <i class="bi bi-archive-fill"></i> Recently Archived Files
+            <small class="text-warning">(Files archived in the last 2 days)</small>
+        </h6>
+    </div>
 
+    @if (archiveLoading) {
+    <div class="text-center">
+        <div class="spinner-border text-secondary" role="status">
+            <span class="visually-hidden">Loading archived files...</span>
+        </div>
+    </div>
+    } @else if (archiveError) {
+    <div class="alert alert-danger text-center">{{ archiveError }}</div>
+    } @else if (archivedFiles.length === 0) {
+    <div class="alert alert-info text-center">No archived files found.</div>
+    } @else if (groupedArchivedFileCategories.length === 0) {
+    <div class="alert alert-warning text-center">
+        No recently archived files found (files are only visible for 2 days after archival).
+    </div>
+    } @else {
+    <div class="table-responsive">
+        <table class="table table-striped table-hover archived-files-table">
+            <tbody>
+                @for (category of groupedArchivedFileCategories; track category) {
+                <h6 class="mt-4 text-muted">
+                    <i class="bi bi-folder-fill"></i> {{ category }}
+                </h6>
 
-
-
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-secondary">
+                            <tr>
+                                <th>File Name</th>
+                                <th>Item Name</th>
+                                <th>Version</th>
+                                <th>Size</th>
+                                <th>Created By</th>
+                                <th>Archived At</th>
+                                <th>Archived Reason</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (file of groupedArchivedFiles[category]; track file.id) {
+                            <tr class="archived-file-row">
+                                <td>
+                                    <i class="bi bi-file-earmark-text text-muted me-1"></i>
+                                    {{ file.fileName }}{{ file.fileExtension }}
+                                    <span class="badge bg-warning ms-1" title="Recently archived">Recently Archived</span>
+                                </td>
+                                <td>{{ file.itemName }}</td>
+                                <td>{{ file.versionNumber }}</td>
+                                <td>{{ getFormattedSize(file.fileSizeInBytes) }}</td>
+                                <td>{{ file.createdBy }}</td>
+                                <td>
+                                    <div class="d-flex flex-column">
+                                        <span class="fw-bold">{{ getFormattedDate(file.archivedAt) }}</span>
+                                        <small class="text-muted">{{ getDaysSinceArchived(file.archivedAt) }} days ago</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="badge bg-secondary" title="{{ file.archivedReason }}">
+                                        {{ file.archivedReason || 'No reason provided' }}
+                                    </span>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                }
+            </tbody>
+        </table>
+    </div>
+    }
+</div>
+}
+}
 
 @if (view === 'dashboard') {
 <app-dashboard></app-dashboard>

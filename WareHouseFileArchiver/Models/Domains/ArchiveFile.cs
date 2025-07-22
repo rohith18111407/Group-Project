@@ -32,5 +32,11 @@ namespace WareHouseFileArchiver.Models.Domains
 
         [NotMapped]
         public IFormFile? File { get; set; }
+
+        //archival functionality 
+        public bool IsArchivedDueToInactivity { get; set; } = false;
+        public DateTime? ArchivedAt { get; set; }
+        public string? ArchivedReason { get; set; }
+        public bool IsActive => !IsArchivedDueToInactivity;
     }
 }

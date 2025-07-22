@@ -34,6 +34,12 @@ export class StaffCenterContentComponent implements OnChanges {
   fileSortDescending = true;
   groupedFiles: { [category: string]: any[] } = {};
 
+  // Archive functionality (read-only for staff)
+  archivedFiles: any[] = [];
+  showArchivedFiles = false;
+  archiveLoading = false;
+  archiveError: string | null = null;
+  groupedArchivedFiles: { [category: string]: any[] } = {};
 
   constructor(private staffService: StaffService) { }
 
@@ -44,7 +50,6 @@ export class StaffCenterContentComponent implements OnChanges {
     if (this.view === 'users') {
       this.fetchUsers();
     }
-
     if (this.view === 'files') {
       this.fetchFiles();
     }
@@ -55,7 +60,7 @@ export class StaffCenterContentComponent implements OnChanges {
     this.staffService.getAllItems(this.sortBy, this.isDescending).subscribe({
       next: items => {
         this.items = items;
-        this.applyItemFilters(); // filter based on search input
+        this.applyItemFilters();
         this.loading = false;
       },
       error: () => {
@@ -91,7 +96,6 @@ export class StaffCenterContentComponent implements OnChanges {
     });
   }
 
-
   fetchUsers() {
     this.loading = true;
     this.error = null;
@@ -99,7 +103,7 @@ export class StaffCenterContentComponent implements OnChanges {
     this.staffService.getAllUsers().subscribe({
       next: res => {
         this.users = res;
-        this.applyUserFilters(); // <- filter after fetch
+        this.applyUserFilters();
         this.loading = false;
       },
       error: () => {
@@ -129,7 +133,6 @@ export class StaffCenterContentComponent implements OnChanges {
     this.applyUserFilters();
   }
 
-
   onRoleFilterChange(event: Event): void {
     const selectElement = event.target as HTMLSelectElement;
     const role = selectElement.value;
@@ -144,7 +147,7 @@ export class StaffCenterContentComponent implements OnChanges {
     this.staffService.getAllFiles().subscribe({
       next: res => {
         this.files = res;
-        this.applyFileFilters(); // Apply filters and group
+        this.applyFileFilters();
         this.loading = false;
       },
       error: () => {
@@ -158,11 +161,17 @@ export class StaffCenterContentComponent implements OnChanges {
     const input = event.target as HTMLInputElement;
     this.fileSearchTerm = input.value.trim().toLowerCase();
     this.applyFileFilters();
+    if (this.showArchivedFiles) {
+      this.applyArchivedFileFilters();
+    }
   }
 
   changeFileSortOrder(): void {
     this.fileSortDescending = !this.fileSortDescending;
     this.applyFileFilters();
+    if (this.showArchivedFiles) {
+      this.applyArchivedFileFilters();
+    }
   }
 
   applyFileFilters(): void {
@@ -187,7 +196,6 @@ export class StaffCenterContentComponent implements OnChanges {
     }, {});
   }
 
-
   getFormattedSize(bytes: number): string {
     if (bytes < 1024) return `${bytes} B`;
     else if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(2)} KB`;
@@ -198,6 +206,9 @@ export class StaffCenterContentComponent implements OnChanges {
     return Object.keys(this.groupedFiles);
   }
 
+  get groupedArchivedFileCategories(): string[] {
+    return Object.keys(this.groupedArchivedFiles);
+  }
 
   onDownloadFile(file: any) {
     this.staffService.downloadFile(file.fileName, file.versionNumber).subscribe({
@@ -219,4 +230,106 @@ export class StaffCenterContentComponent implements OnChanges {
     });
   }
 
+  // ARCHIVE METHODS (Staff - Read Only)
+
+  /**
+   * Toggle showing archived files
+   */
+  toggleArchivedFiles(): void {
+    this.showArchivedFiles = !this.showArchivedFiles;
+    if (this.showArchivedFiles && this.archivedFiles.length === 0) {
+      this.fetchArchivedFiles();
+    }
+  }
+
+  /**
+   * Fetch archived files (Staff can only view)
+   */
+  fetchArchivedFiles(): void {
+    this.archiveLoading = true;
+    this.archiveError = null;
+
+    this.staffService.getArchivedFiles().subscribe({
+      next: (files) => {
+        this.archivedFiles = files;
+        this.applyArchivedFileFilters();
+        this.archiveLoading = false;
+      },
+      error: () => {
+        this.archiveError = 'Failed to fetch archived files.';
+        this.archiveLoading = false;
+      }
+    });
+  }
+
+  /**
+   * Apply filters to archived files (Staff only sees recently archived files)
+   */
+  applyArchivedFileFilters(): void {
+    const filtered = this.archivedFiles.filter(file => {
+      // Staff can only see files archived within the last 2 days
+      const archivedDate = new Date(file.archivedAt);
+      const twoDaysAgo = new Date();
+      twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+      
+      const isRecentlyArchived = archivedDate >= twoDaysAgo;
+      
+      if (!isRecentlyArchived) {
+        return false;
+      }
+
+      // Apply search filter
+      const nameMatch = file.fileName?.toLowerCase().includes(this.fileSearchTerm);
+      const itemMatch = file.itemName?.toLowerCase().includes(this.fileSearchTerm);
+      const categoryMatch = file.category?.toLowerCase().includes(this.fileSearchTerm);
+      
+      return nameMatch || itemMatch || categoryMatch;
+    });
+
+    const sorted = filtered.sort((a, b) => {
+      const aTime = new Date(a.archivedAt).getTime();
+      const bTime = new Date(b.archivedAt).getTime();
+      return this.fileSortDescending ? bTime - aTime : aTime - bTime;
+    });
+
+    this.groupedArchivedFiles = sorted.reduce((acc: any, file: any) => {
+      const category = file.category || 'Uncategorized';
+      if (!acc[category]) acc[category] = [];
+      acc[category].push(file);
+      return acc;
+    }, {});
+  }
+
+  /**
+   * Check if a file was archived within the last 2 days
+   */
+  isRecentlyArchived(file: any): boolean {
+    const archivedDate = new Date(file.archivedAt);
+    const twoDaysAgo = new Date();
+    twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+    return archivedDate >= twoDaysAgo;
+  }
+
+  /**
+   * Get formatted date for display
+   */
+  getFormattedDate(dateString: string): string {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit'
+    });
+  }
+
+  /**
+   * Get days since archived
+   */
+  getDaysSinceArchived(archivedAt: string): number {
+    const archivedDate = new Date(archivedAt);
+    const now = new Date();
+    const diffTime = Math.abs(now.getTime() - archivedDate.getTime());
+    return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  }
 }

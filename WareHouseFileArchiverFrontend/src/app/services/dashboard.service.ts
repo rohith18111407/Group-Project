@@ -7,12 +7,14 @@ export class DashboardService {
     constructor(private http: HttpClient) { }
     private readonly baseUrl = 'http://localhost:5239/api/v1';
 
+    private getAuthHeaders(): HttpHeaders {
+        const token = sessionStorage.getItem('jwtToken');
+        return new HttpHeaders({ 'Authorization': `Bearer ${token}` });
+    }
 
     getAllFiles(): Observable<any[]> {
-        const token = sessionStorage.getItem('jwtToken');
-        const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
         return this.http
-            .get<any>(`${this.baseUrl}/files`, { headers: headers })
+            .get<any>(`${this.baseUrl}/files`, { headers: this.getAuthHeaders() })
             .pipe(map(res => res.data));
     }
 
@@ -20,9 +22,6 @@ export class DashboardService {
         sortBy: 'createdAt' | 'createdBy' | 'name' | 'category' = 'createdAt',
         isDescending: boolean = false
     ): Observable<any[]> {
-        const token = sessionStorage.getItem('jwtToken');
-        const headers = new HttpHeaders({ 'Authorization': `Bearer ${token}` });
-
         const params = new URLSearchParams({
             isDescending: isDescending.toString(),
             pageNumber: '1',
@@ -31,7 +30,7 @@ export class DashboardService {
         });
 
         return this.http
-            .get<any>(`${this.baseUrl}/Items?${params.toString()}`, { headers })
+            .get<any>(`${this.baseUrl}/Items?${params.toString()}`, { headers: this.getAuthHeaders() })
             .pipe(map(res => res.data));
     }
 }

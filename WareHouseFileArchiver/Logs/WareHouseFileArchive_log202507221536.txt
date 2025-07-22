@@ -1,0 +1,32 @@
+2025-07-22 15:36:05.039 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/api/v1/archive/files/by-admin/testsadmin@example.com - null 0
+2025-07-22 15:36:05.043 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:36:05.043 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/api/v1/archive/files/by-admin/testsadmin@example.com - 204 null null 3.8002ms
+2025-07-22 15:36:05.044 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/api/v1/archive/files/by-admin/testsadmin@example.com - null null
+2025-07-22 15:36:05.045 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:36:05.045 +05:30 [INF] Executing endpoint 'WareHouseFileArchiver.Controllers.ArchiveManagementController.GetArchivedFilesByAdmin (WareHouseFileArchiver)'
+2025-07-22 15:36:05.045 +05:30 [INF] Route matched with {action = "GetArchivedFilesByAdmin", controller = "ArchiveManagement"}. Executing controller action with signature System.Threading.Tasks.Task`1[Microsoft.AspNetCore.Mvc.IActionResult] GetArchivedFilesByAdmin(System.String) on controller WareHouseFileArchiver.Controllers.ArchiveManagementController (WareHouseFileArchiver).
+2025-07-22 15:36:05.047 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[@__adminName_0='?'], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."ArchivedAt", a."ArchivedReason", a."Category", a."CreatedAt", a."CreatedBy", a."Description", a."FileExtension", a."FileName", a."FilePath", a."FileSizeInBytes", a."IsArchivedDueToInactivity", a."ItemId", a."UpdatedAt", a."UpdatedBy", a."VersionNumber", i."Id", i."Category", i."CreatedAt", i."CreatedBy", i."Description", i."Name", i."UpdatedAt", i."UpdatedBy"
+FROM "ArchiveFiles" AS a
+LEFT JOIN "Items" AS i ON a."ItemId" = i."Id"
+WHERE a."IsArchivedDueToInactivity" AND a."CreatedBy" = @__adminName_0
+ORDER BY a."ArchivedAt" DESC
+2025-07-22 15:36:05.047 +05:30 [INF] Executing OkObjectResult, writing value of type '<>f__AnonymousType0`4[[System.Boolean, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.String, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Collections.Generic.IEnumerable`1[[WareHouseFileArchiver.Models.DTOs.ArchivedFileResponseDto, WareHouseFileArchiver, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]], System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e],[System.Object, System.Private.CoreLib, Version=9.0.0.0, Culture=neutral, PublicKeyToken=7cec85d7bea7798e]]'.
+2025-07-22 15:36:05.048 +05:30 [INF] Executed action WareHouseFileArchiver.Controllers.ArchiveManagementController.GetArchivedFilesByAdmin (WareHouseFileArchiver) in 1.9589ms
+2025-07-22 15:36:05.048 +05:30 [INF] Executed endpoint 'WareHouseFileArchiver.Controllers.ArchiveManagementController.GetArchivedFilesByAdmin (WareHouseFileArchiver)'
+2025-07-22 15:36:05.048 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/api/v1/archive/files/by-admin/testsadmin@example.com - 200 null application/json; charset=utf-8 3.2845ms
+2025-07-22 15:36:19.641 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-22 15:36:19.642 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=iuXjCKPk1-DjBN9rGHs8rg&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijc2MzlkNjk1LWFlNzItNDYxNC04Mzc3LWY2MTYzZTRiOWQ4NiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InRlc3RzYWRtaW5AZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc1MzE3ODg2NCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MjM5LyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTIzOS8ifQ.NBBZG6NnqjZThJHa6-o1nf_CELm8Zox-r9-Up6FLWFg - 101 null null 34444.0995ms
+2025-07-22 15:36:26.949 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-22 15:36:26.950 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:36:26.950 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 204 null null 0.3648ms
+2025-07-22 15:36:26.951 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-22 15:36:26.951 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:36:26.952 +05:30 [INF] Executing endpoint '/notificationhub/negotiate'
+2025-07-22 15:36:26.952 +05:30 [INF] Executed endpoint '/notificationhub/negotiate'
+2025-07-22 15:36:26.952 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 200 316 application/json 1.0228ms
+2025-07-22 15:36:26.961 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/notificationhub?id=BcDMZ113zr5hjxsMqwyL_Q&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijc2MzlkNjk1LWFlNzItNDYxNC04Mzc3LWY2MTYzZTRiOWQ4NiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InRlc3RzYWRtaW5AZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc1MzE3ODg2NCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MjM5LyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTIzOS8ifQ.NBBZG6NnqjZThJHa6-o1nf_CELm8Zox-r9-Up6FLWFg - null null
+2025-07-22 15:36:26.961 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:36:26.962 +05:30 [INF] Executing endpoint '/notificationhub'
+2025-07-22 15:36:57.019 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-22 15:36:57.020 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=BcDMZ113zr5hjxsMqwyL_Q&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijc2MzlkNjk1LWFlNzItNDYxNC04Mzc3LWY2MTYzZTRiOWQ4NiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InRlc3RzYWRtaW5AZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc1MzE3ODg2NCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MjM5LyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTIzOS8ifQ.NBBZG6NnqjZThJHa6-o1nf_CELm8Zox-r9-Up6FLWFg - 101 null null 30058.3465ms

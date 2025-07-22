@@ -1,0 +1,4 @@
+2025-07-22 16:38:48.961 +05:30 [INF] Application is shutting down...
+2025-07-22 16:38:48.988 +05:30 [ERR] Error occurred while processing inactive admin archival
+System.Threading.Tasks.TaskCanceledException: A task was canceled.
+   at WareHouseFileArchiver.Services.AdminArchivalService.ExecuteAsync(CancellationToken stoppingToken) in /Users/aditirajesh/Desktop/Group-Project/WareHouseFileArchiver/Services/AdminArchivalService.cs:line 36

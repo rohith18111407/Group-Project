@@ -37,4 +37,29 @@ namespace WareHouseFileArchiver.Models.DTOs
         public string CreatedBy { get; set; } = "";
         public DateTime CreatedAt { get; set; }
     }
+
+    public class ArchivalStatisticsDto
+    {
+        public int TotalFiles { get; set; }
+        public int ActiveFiles { get; set; }
+        public int ArchivedFiles { get; set; }
+        public double ArchivalPercentage { get; set; }
+        public List<AdminArchivalStatDto> ArchivalsByAdmin { get; set; } = new();
+        public List<DailyArchivalDto> RecentArchivalTrend { get; set; } = new();
+    }
+
+    public class AdminArchivalStatDto
+    {
+        public string AdminName { get; set; } = string.Empty;
+        public int ArchivedFilesCount { get; set; }
+        public double TotalSizeArchivedMB { get; set; }
+        public DateTime? FirstArchivedDate { get; set; }
+        public DateTime? LastArchivedDate { get; set; }
+    }
+
+    public class DailyArchivalDto
+    {
+        public DateTime Date { get; set; }
+        public int ArchivedFilesCount { get; set; }
+    }
 }

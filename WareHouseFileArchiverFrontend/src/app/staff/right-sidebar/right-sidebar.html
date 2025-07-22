@@ -11,12 +11,11 @@
   <div class="profile-card shadow-lg p-4 text-center position-relative">
     <div class="position-absolute top-0 end-0 p-2">
       <button class="btn btn-outline-secondary position-relative" (click)="toggleNotifications()">
-        <i class="bi bi-bell"></i>
+        <i class="bi bi-bell" [class.bi-bell-fill]="showNotifications"></i>
         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
           *ngIf="(unreadCount$ | async) as count">
           {{ count }}
         </span>
-
       </button>
     </div>
 
@@ -36,32 +35,107 @@
   </div>
 
   @if (showNotifications) {
-  <div class="mt-2 p-2 border bg-light shadow-sm rounded">
-    <div class="d-flex justify-content-between align-items-center mb-2">
+  <div class="mt-3 p-3 border bg-light shadow-sm rounded notifications-panel">
+    <div class="d-flex justify-content-between align-items-center mb-3">
       <h6 class="fw-bold mb-0">
         <i class="bi bi-bell-fill me-1"></i> Notifications
+        <span class="badge bg-secondary ms-1">{{ (notifications$ | async)?.length || 0 }}</span>
       </h6>
-      <button class="btn btn-sm btn-outline-danger" (click)="clearNotifications()">
-        <i class="bi bi-x-circle"></i> Clear
-      </button>
+      <div class="btn-group" role="group">
+        <button class="btn btn-sm btn-outline-primary" (click)="markAllAsRead()" 
+                *ngIf="(unreadCount$ | async) as count">
+          <i class="bi bi-check-all"></i> Mark All Read
+        </button>
+        <button class="btn btn-sm btn-outline-danger" (click)="clearNotifications()">
+          <i class="bi bi-x-circle"></i> Clear All
+        </button>
+      </div>
     </div>
 
-    <ul class="list-group small">
+    <div class="notifications-list">
+      @if ((notifications$ | async)?.length === 0) {
+      <div class="text-center text-muted py-3">
+        <i class="bi bi-bell-slash display-6"></i>
+        <p class="mb-0">No notifications</p>
+      </div>
+      } @else {
       @for (note of notifications$ | async; track note.id) {
-      <li class="list-group-item">
-        <strong>{{ note.action }}</strong><br />
-        <i class="bi bi-file-earmark"></i> <strong>File:</strong> {{ note.fileName }}{{ note.fileExtension }}<br />
-        <i class="bi bi-box"></i> <strong>Item:</strong> {{ note.itemName || '-' }}<br />
-        <i class="bi bi-tags"></i> <strong>Item Category:</strong> {{ note.itemCategoryLabel || '-' }}<br />
-        <i class="bi bi-archive"></i> <strong>File Category:</strong> {{ note.fileCategoryLabel || '-' }}<br />
-        <i class="bi bi-hash"></i> <strong>Version:</strong> {{ note.versionNumber }}<br />
-        <i class="bi bi-calendar-event"></i> <strong>Created At:</strong> {{ note.createdAt | date:'short' }}<br />
-        <i class="bi bi-person"></i> <strong>By:</strong> {{ note.createdBy }}
-      </li>
-      }
-    </ul>
-  </div>
+      <div class="notification-item mb-2 p-2 border rounded" 
+           [class.notification-unread]="!note.isRead"
+           [class.notification-read]="note.isRead">
+        
+        <!-- Notification Header -->
+        <div class="d-flex justify-content-between align-items-start mb-1">
+          <div class="notification-type">
+            <i class="bi me-1" 
+               [class.bi-archive-fill]="note.type === 'warning'"
+               [class.bi-check-circle-fill]="note.type === 'success'"
+               [class.bi-info-circle-fill]="note.type === 'info'"
+               [class.bi-exclamation-triangle-fill]="note.type === 'error'"
+               [class.text-warning]="note.type === 'warning'"
+               [class.text-success]="note.type === 'success'"
+               [class.text-info]="note.type === 'info'"
+               [class.text-danger]="note.type === 'error'"></i>
+            <strong class="small">{{ note.action }}</strong>
+          </div>
+          <div class="notification-controls">
+            <button class="btn btn-sm btn-outline-primary" (click)="markAsRead(note.id)" 
+                    *ngIf="!note.isRead" title="Mark as read">
+              <i class="bi bi-check"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" (click)="clearNotification(note.id)" 
+                    title="Remove notification">
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+        </div>
 
+        <!-- Notification Message -->
+        <div class="notification-message mb-2">
+          <small class="text-muted">{{ note.message }}</small>
+        </div>
+
+        <!-- File Details (if available) -->
+        @if (note.fileName) {
+        <div class="notification-details">
+          <div class="row g-1 small">
+            <div class="col-12">
+              <i class="bi bi-file-earmark text-primary"></i> 
+              <strong>File:</strong> {{ note.fileName }}{{ note.fileExtension }}
+            </div>
+            @if (note.itemName) {
+            <div class="col-12">
+              <i class="bi bi-box text-success"></i> 
+              <strong>Item:</strong> {{ note.itemName }}
+            </div>
+            }
+            @if (note.versionNumber) {
+            <div class="col-6">
+              <i class="bi bi-hash text-info"></i> 
+              <strong>Version:</strong> {{ note.versionNumber }}
+            </div>
+            }
+            @if (note.createdBy) {
+            <div class="col-6">
+              <i class="bi bi-person text-secondary"></i> 
+              <strong>By:</strong> {{ note.createdBy }}
+            </div>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- Notification Timestamp -->
+        <div class="notification-timestamp mt-2">
+          <small class="text-muted">
+            <i class="bi bi-clock"></i> {{ getRelativeTime(note.timestamp) }}
+          </small>
+        </div>
+      </div>
+      }
+      }
+    </div>
+  </div>
   }
   }
 </div>

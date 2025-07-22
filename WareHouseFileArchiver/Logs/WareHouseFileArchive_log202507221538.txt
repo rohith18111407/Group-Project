@@ -1,0 +1,44 @@
+2025-07-22 15:38:03.778 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-22 15:38:03.785 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=v3wNl8sw0PZBX1U1cy1_Og&access_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6Ijc2MzlkNjk1LWFlNzItNDYxNC04Mzc3LWY2MTYzZTRiOWQ4NiIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL2VtYWlsYWRkcmVzcyI6InRlc3RzYWRtaW5AZXhhbXBsZS5jb20iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc1MzE3ODk2MywiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MjM5LyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTIzOS8ifQ.rgbyF4x4FLJ6dtsN-FWjagRfOo3Rqph4GRhYEc5kKG4 - 101 null null 20064.4922ms
+2025-07-22 15:38:04.783 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-22 15:38:04.783 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:38:04.783 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 204 null null 0.3622ms
+2025-07-22 15:38:04.785 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-22 15:38:04.785 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:38:04.785 +05:30 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-07-22 15:38:04.786 +05:30 [INF] AuthenticationScheme: Bearer was challenged.
+2025-07-22 15:38:04.786 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 401 0 null 0.8038ms
+2025-07-22 15:38:06.794 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-22 15:38:06.794 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:38:06.795 +05:30 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-07-22 15:38:06.795 +05:30 [INF] AuthenticationScheme: Bearer was challenged.
+2025-07-22 15:38:06.795 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 401 0 null 0.9421ms
+2025-07-22 15:38:10.804 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-22 15:38:10.804 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:38:10.805 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 204 null null 0.4204ms
+2025-07-22 15:38:10.806 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-22 15:38:10.806 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:38:10.806 +05:30 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-07-22 15:38:10.807 +05:30 [INF] AuthenticationScheme: Bearer was challenged.
+2025-07-22 15:38:10.807 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 401 0 null 0.6343ms
+2025-07-22 15:38:18.813 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-22 15:38:18.814 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:38:18.814 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 204 null null 0.7345ms
+2025-07-22 15:38:18.816 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-22 15:38:18.816 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:38:18.817 +05:30 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-07-22 15:38:18.817 +05:30 [INF] AuthenticationScheme: Bearer was challenged.
+2025-07-22 15:38:18.817 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 401 0 null 0.7548ms
+2025-07-22 15:38:34.824 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-22 15:38:34.824 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:38:34.824 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 204 null null 0.3913ms
+2025-07-22 15:38:34.826 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-22 15:38:34.826 +05:30 [INF] CORS policy execution successful.
+2025-07-22 15:38:34.826 +05:30 [INF] Authorization failed. These requirements were not met:
+DenyAnonymousAuthorizationRequirement: Requires an authenticated user.
+2025-07-22 15:38:34.826 +05:30 [INF] AuthenticationScheme: Bearer was challenged.
+2025-07-22 15:38:34.826 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 401 0 null 0.5618ms

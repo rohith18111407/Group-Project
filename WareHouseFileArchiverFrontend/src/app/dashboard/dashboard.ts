@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
   error: string | null = null;
 
   itemCards: any[] = [];
-
+  
   pieLabels: string[] = [];
   pieData: number[] = [];
 

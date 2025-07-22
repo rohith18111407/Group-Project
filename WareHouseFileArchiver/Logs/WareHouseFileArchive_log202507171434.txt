@@ -1,6 +1,0 @@
-2025-07-17 14:34:29.322 +05:30 [INF] Application is shutting down...
-2025-07-17 14:34:44.147 +05:30 [INF] User profile is available. Using '/Users/aditirajesh/.aspnet/DataProtection-Keys' as key repository; keys will not be encrypted at rest.
-2025-07-17 14:34:44.308 +05:30 [INF] Now listening on: http://localhost:5239
-2025-07-17 14:34:44.310 +05:30 [INF] Application started. Press Ctrl+C to shut down.
-2025-07-17 14:34:44.311 +05:30 [INF] Hosting environment: Development
-2025-07-17 14:34:44.311 +05:30 [INF] Content root path: /Users/aditirajesh/Desktop/Group-Project/WareHouseFileArchiver

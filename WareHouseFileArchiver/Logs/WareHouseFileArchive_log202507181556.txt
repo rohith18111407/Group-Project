@@ -1,0 +1,70 @@
+2025-07-18 15:56:01.982 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:01.986 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:01.986 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 204 null null 4.1424ms
+2025-07-18 15:56:01.988 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:01.989 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:01.989 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 404 0 null 0.5203ms
+2025-07-18 15:56:01.989 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5239/notificationshub/negotiate, Response status code: 404
+2025-07-18 15:56:07.035 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:07.035 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:07.035 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 204 null null 0.3818ms
+2025-07-18 15:56:07.037 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:07.037 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:07.037 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 404 0 null 0.4123ms
+2025-07-18 15:56:07.038 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5239/notificationshub/negotiate, Response status code: 404
+2025-07-18 15:56:12.080 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:12.080 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:12.080 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 204 null null 0.3775ms
+2025-07-18 15:56:12.082 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:12.082 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:12.082 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 404 0 null 0.4285ms
+2025-07-18 15:56:12.082 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5239/notificationshub/negotiate, Response status code: 404
+2025-07-18 15:56:17.128 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:17.129 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:17.130 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 204 null null 1.5246ms
+2025-07-18 15:56:17.132 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:17.132 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:17.132 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 404 0 null 0.5123ms
+2025-07-18 15:56:17.133 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5239/notificationshub/negotiate, Response status code: 404
+2025-07-18 15:56:22.176 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:22.176 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:22.177 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 204 null null 0.3285ms
+2025-07-18 15:56:22.178 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:22.178 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:22.178 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 404 0 null 0.4788ms
+2025-07-18 15:56:22.179 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5239/notificationshub/negotiate, Response status code: 404
+2025-07-18 15:56:27.184 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:27.184 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:27.184 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 204 null null 0.3136ms
+2025-07-18 15:56:27.185 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:27.186 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:27.186 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 404 0 null 0.6664ms
+2025-07-18 15:56:27.186 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5239/notificationshub/negotiate, Response status code: 404
+2025-07-18 15:56:32.227 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:32.227 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:32.227 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 204 null null 0.2869ms
+2025-07-18 15:56:32.228 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:32.228 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:32.229 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 404 0 null 0.3572ms
+2025-07-18 15:56:32.229 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5239/notificationshub/negotiate, Response status code: 404
+2025-07-18 15:56:37.235 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:37.236 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:37.236 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 204 null null 1.0131ms
+2025-07-18 15:56:37.238 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:37.239 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:37.239 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 404 0 null 0.4988ms
+2025-07-18 15:56:37.239 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5239/notificationshub/negotiate, Response status code: 404
+2025-07-18 15:56:42.279 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:42.279 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:42.281 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 204 null null 1.4988ms
+2025-07-18 15:56:42.282 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:42.282 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:42.282 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 404 0 null 0.4901ms
+2025-07-18 15:56:42.283 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5239/notificationshub/negotiate, Response status code: 404
+2025-07-18 15:56:47.326 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:47.326 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:47.326 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 204 null null 0.4912ms
+2025-07-18 15:56:47.328 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - null 0
+2025-07-18 15:56:47.328 +05:30 [INF] CORS policy execution successful.
+2025-07-18 15:56:47.329 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationshub/negotiate?negotiateVersion=1 - 404 0 null 0.4445ms
+2025-07-18 15:56:47.329 +05:30 [INF] Request reached the end of the middleware pipeline without being handled by application code. Request path: POST http://localhost:5239/notificationshub/negotiate, Response status code: 404

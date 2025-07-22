@@ -1,2 +1,0 @@
-2025-07-17 10:30:45.401 +05:30 [INF] Executed endpoint '/notificationhub'
-2025-07-17 10:30:45.414 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=i8AaqN2pPhR7sXPBJ-BzEg - 101 null null 1060147.0967ms
