@@ -34,6 +34,12 @@ namespace WareHouseFileArchiver.Models.Domains
         public bool IsScheduled { get; set; } = false;
         public bool IsProcessed { get; set; } = false; // For scheduled files
 
+        // Fields for trash/soft delete functionality
+        public bool IsDeleted { get; set; } = false;
+        public DateTime? DeletedAt { get; set; }
+        public string? DeletedBy { get; set; }
+        public string? OriginalFilePath { get; set; } // Store original path before moving to trash
+
         [NotMapped]
         public IFormFile? File { get; set; }
     }

@@ -116,6 +116,7 @@ builder.Services.AddDbContext<WareHouseDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IArchiveFileRepository, ArchiveFileRepository>();
+builder.Services.AddScoped<IFileManagementService, FileManagementService>();
 
 // To prevet enum shown as numbers
 builder.Services.AddControllers()
@@ -129,6 +130,9 @@ builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
 // Schedule upload Background Service
 builder.Services.AddHostedService<ScheduledUploadProcessorService>();
+
+// Trash cleanup Background Service
+builder.Services.AddHostedService<TrashCleanupService>();
 
 builder.Services.AddSignalR();
 

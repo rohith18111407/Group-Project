@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using WareHouseFileArchiver.Data;
@@ -11,9 +12,11 @@ using WareHouseFileArchiver.Data;
 namespace WareHouseFileArchiver.Migrations.WareHouseDb
 {
     [DbContext(typeof(WareHouseDbContext))]
-    partial class WareHouseDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250722020517_AddTrashFields")]
+    partial class AddTrashFields
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,9 +76,6 @@ namespace WareHouseFileArchiver.Migrations.WareHouseDb
 
                     b.Property<Guid?>("ItemId")
                         .HasColumnType("uuid");
-
-                    b.Property<string>("OriginalFilePath")
-                        .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");

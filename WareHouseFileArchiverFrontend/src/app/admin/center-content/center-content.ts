@@ -10,15 +10,16 @@ import { DashboardComponent } from '../../dashboard/dashboard';
 import { AddFileComponent } from "../add-file/add-file";
 import { StatisticsComponent } from '../../statistics/statistics';
 import { ScheduledUploadsComponent } from "../scheduled-uploads/scheduled-uploads";
+import { TrashComponent } from "../trash/trash";
 
 @Component({
   selector: 'app-center-content',
-  imports: [CommonModule, AddItemComponent, AddUserComponent, EditUserComponent, EditItemComponent, DashboardComponent, AddFileComponent, StatisticsComponent, ScheduledUploadsComponent],
+  imports: [CommonModule, AddItemComponent, AddUserComponent, EditUserComponent, EditItemComponent, DashboardComponent, AddFileComponent, StatisticsComponent, ScheduledUploadsComponent, TrashComponent],
   templateUrl: './center-content.html',
   styleUrl: './center-content.css'
 })
 export class CenterContentComponent implements OnChanges {
-  @Input() view: 'dashboard' | 'files' | 'items' | 'users' | 'statistics' | 'scheduled' = 'dashboard';
+  @Input() view: 'dashboard' | 'files' | 'items' | 'users' | 'statistics' | 'scheduled' | 'trash' = 'dashboard';
 
   items: any[] = [];
   loading = false;

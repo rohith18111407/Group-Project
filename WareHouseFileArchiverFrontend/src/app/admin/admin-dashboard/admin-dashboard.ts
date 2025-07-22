@@ -12,10 +12,10 @@ import { AdminService } from '../../services/admin.service';
   styleUrl: './admin-dashboard.css'
 })
 export class AdminDashboardComponent {
-  selectedView: 'dashboard' | 'files' | 'items' | 'users' | 'statistics' | 'scheduled' = 'dashboard';
+  selectedView: 'dashboard' | 'files' | 'items' | 'users' | 'statistics' | 'scheduled' | 'trash' = 'dashboard';
   adminService = inject(AdminService);
 
-  setView(view: 'dashboard' | 'files' | 'items' | 'users' | 'statistics' | 'scheduled') {
+  setView(view: 'dashboard' | 'files' | 'items' | 'users' | 'statistics' | 'scheduled' | 'trash') {
     this.selectedView = view;
   }
 }

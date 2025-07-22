@@ -1,3 +1,4 @@
+using System.IO.Compression;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -6,6 +7,7 @@ using Microsoft.AspNetCore.SignalR;
 using WareHouseFileArchiver.Interfaces;
 using WareHouseFileArchiver.Models.Domains;
 using WareHouseFileArchiver.Models.DTOs;
+using WareHouseFileArchiver.Services;
 using WareHouseFileArchiver.SignalRHub;
 
 namespace WareHouseFileArchiver.Controllers
@@ -19,18 +21,21 @@ namespace WareHouseFileArchiver.Controllers
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly UserManager<ApplicationUser> userManager;
         private readonly IHubContext<NotificationsHub> hubContext;
+        private readonly IFileManagementService fileManagementService;
 
         public FilesController(IArchiveFileRepository archiveFileRepository,
                                IWebHostEnvironment webHostEnvironment,
                                IHttpContextAccessor httpContextAccessor,
                                UserManager<ApplicationUser> userManager,
-                               IHubContext<NotificationsHub> hubContext)
+                               IHubContext<NotificationsHub> hubContext,
+                               IFileManagementService fileManagementService)
         {
             this.archiveFileRepository = archiveFileRepository;
             this.webHostEnvironment = webHostEnvironment;
             this.httpContextAccessor = httpContextAccessor;
             this.userManager = userManager;
             this.hubContext = hubContext;
+            this.fileManagementService = fileManagementService;
         }
 
         [Authorize(Roles = "Admin")]
@@ -565,35 +570,37 @@ namespace WareHouseFileArchiver.Controllers
                 });
             }
 
-            // Delete physical file if it exists
-            if (System.IO.File.Exists(file.FilePath))
+            // Get current user for auditing
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var user = await userManager.FindByIdAsync(userId);
+            var deletedBy = user?.UserName ?? "Unknown";
+
+            try
             {
-                try
+                // Move file to trash folder
+                var trashFilePath = await fileManagementService.MoveFileToTrashAsync(file);
+                
+                // Mark as deleted in database
+                await archiveFileRepository.MoveToTrashAsync(file, deletedBy, trashFilePath);
+
+                return Ok(new
                 {
-                    System.IO.File.Delete(file.FilePath);
-                }
-                catch (Exception ex)
-                {
-                    return StatusCode(500, new
-                    {
-                        success = false,
-                        message = "Error deleting physical file",
-                        data = (object?)null,
-                        errors = new { File = new[] { ex.Message } }
-                    });
-                }
+                    success = true,
+                    message = "File moved to trash successfully",
+                    data = new { file.Id, file.FileName, file.VersionNumber },
+                    errors = (object?)null
+                });
             }
-
-            // Remove from DB
-            await archiveFileRepository.DeleteAsync(file);
-
-            return Ok(new
+            catch (Exception ex)
             {
-                success = true,
-                message = "File deleted successfully",
-                data = new { file.Id, file.FileName, file.VersionNumber },
-                errors = (object?)null
-            });
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Error moving file to trash",
+                    data = (object?)null,
+                    errors = new { File = new[] { ex.Message } }
+                });
+            }
         }
 
 
@@ -699,6 +706,245 @@ namespace WareHouseFileArchiver.Controllers
                     message = "An error occurred while cancelling the scheduled upload.",
                     data = (object?)null,
                     errors = (object?)null
+                });
+            }
+        }
+
+        // Trash Management Endpoints
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("trash")]
+        public async Task<IActionResult> GetTrashedFiles()
+        {
+            try
+            {
+                var trashedFiles = await archiveFileRepository.GetTrashedFilesAsync();
+                
+                var trashedFilesDtos = trashedFiles.Select(file => new TrashFileResponseDto
+                {
+                    Id = file.Id,
+                    FileName = file.FileName,
+                    FileExtension = file.FileExtension,
+                    FileSizeInBytes = file.FileSizeInBytes,
+                    VersionNumber = file.VersionNumber,
+                    Description = file.Description,
+                    Category = file.Category,
+                    ItemId = file.ItemId,
+                    ItemName = file.Item?.Name,
+                    CreatedAt = file.CreatedAt,
+                    CreatedBy = file.CreatedBy,
+                    DeletedAt = file.DeletedAt,
+                    DeletedBy = file.DeletedBy,
+                    DaysInTrash = file.DeletedAt.HasValue ? (int)(DateTime.UtcNow - file.DeletedAt.Value).TotalDays : 0,
+                    DaysRemaining = file.DeletedAt.HasValue ? Math.Max(0, 7 - (int)(DateTime.UtcNow - file.DeletedAt.Value).TotalDays) : 0,
+                    CanRestore = file.DeletedAt.HasValue && (DateTime.UtcNow - file.DeletedAt.Value).TotalDays < 7
+                }).ToList();
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Trashed files retrieved successfully",
+                    data = trashedFilesDtos,
+                    errors = (object?)null
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Error retrieving trashed files",
+                    data = (object?)null,
+                    errors = new { General = new[] { ex.Message } }
+                });
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("trash/{id:guid}/restore")]
+        public async Task<IActionResult> RestoreFromTrash(Guid id)
+        {
+            try
+            {
+                // Get the trashed file
+                var trashedFiles = await archiveFileRepository.GetTrashedFilesAsync();
+                var file = trashedFiles.FirstOrDefault(f => f.Id == id);
+
+                if (file == null)
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        message = "File not found in trash",
+                        data = (object?)null,
+                        errors = new { Id = new[] { "Invalid file ID." } }
+                    });
+                }
+
+                // Check if file can still be restored (within 7 days)
+                if (file.DeletedAt.HasValue && (DateTime.UtcNow - file.DeletedAt.Value).TotalDays >= 7)
+                {
+                    return BadRequest(new
+                    {
+                        success = false,
+                        message = "File cannot be restored - exceeded 7-day limit",
+                        data = (object?)null,
+                        errors = new { File = new[] { "File has been in trash for more than 7 days and cannot be restored." } }
+                    });
+                }
+
+                // Restore file from trash folder
+                var restoredFilePath = await fileManagementService.RestoreFileFromTrashAsync(file);
+                
+                // Mark as not deleted in database and update file path
+                await archiveFileRepository.RestoreFromTrashAsync(id, restoredFilePath);
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "File restored from trash successfully",
+                    data = new { file.Id, file.FileName, file.VersionNumber },
+                    errors = (object?)null
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Error restoring file from trash",
+                    data = (object?)null,
+                    errors = new { General = new[] { ex.Message } }
+                });
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("trash/{id:guid}/permanent")]
+        public async Task<IActionResult> PermanentlyDeleteFromTrash(Guid id)
+        {
+            try
+            {
+                // Get the trashed file
+                var trashedFiles = await archiveFileRepository.GetTrashedFilesAsync();
+                var file = trashedFiles.FirstOrDefault(f => f.Id == id);
+
+                if (file == null)
+                {
+                    return NotFound(new
+                    {
+                        success = false,
+                        message = "File not found in trash",
+                        data = (object?)null,
+                        errors = new { Id = new[] { "Invalid file ID." } }
+                    });
+                }
+
+                // Delete physical file from trash
+                await fileManagementService.DeletePhysicalFileFromTrashAsync(file);
+                
+                // Permanently delete from database
+                await archiveFileRepository.PermanentlyDeleteAsync(id);
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "File permanently deleted",
+                    data = new { file.Id, file.FileName, file.VersionNumber },
+                    errors = (object?)null
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Error permanently deleting file",
+                    data = (object?)null,
+                    errors = new { General = new[] { ex.Message } }
+                });
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpGet("trash/stats")]
+        public async Task<IActionResult> GetTrashStats()
+        {
+            try
+            {
+                var trashedFiles = await archiveFileRepository.GetTrashedFilesAsync();
+                
+                var stats = new TrashStatsDto
+                {
+                    TotalTrashedFiles = trashedFiles.Count(),
+                    FilesExpiringSoon = trashedFiles.Count(f => f.DeletedAt.HasValue && 
+                        (DateTime.UtcNow - f.DeletedAt.Value).TotalDays >= 6 && 
+                        (DateTime.UtcNow - f.DeletedAt.Value).TotalDays < 7),
+                    TotalSizeInBytes = trashedFiles.Sum(f => f.FileSizeInBytes),
+                    OldestFileDate = trashedFiles.Any() ? trashedFiles.Min(f => f.DeletedAt) : null
+                };
+
+                return Ok(new
+                {
+                    success = true,
+                    message = "Trash statistics retrieved successfully",
+                    data = stats,
+                    errors = (object?)null
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Error retrieving trash statistics",
+                    data = (object?)null,
+                    errors = new { General = new[] { ex.Message } }
+                });
+            }
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPost("trash/cleanup")]
+        public async Task<IActionResult> ForceCleanupTrash()
+        {
+            try
+            {
+                var expiredFiles = await archiveFileRepository.GetExpiredTrashedFilesAsync(7);
+                int deletedCount = 0;
+
+                foreach (var file in expiredFiles)
+                {
+                    try
+                    {
+                        await fileManagementService.DeletePhysicalFileFromTrashAsync(file);
+                        await archiveFileRepository.PermanentlyDeleteAsync(file.Id);
+                        deletedCount++;
+                    }
+                    catch (Exception ex)
+                    {
+                        // Log the error but continue with other files
+                        // Could log to ILogger here
+                        continue;
+                    }
+                }
+
+                return Ok(new
+                {
+                    success = true,
+                    message = $"Cleanup completed. {deletedCount} expired files permanently deleted.",
+                    data = new { DeletedCount = deletedCount },
+                    errors = (object?)null
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    success = false,
+                    message = "Error during trash cleanup",
+                    data = (object?)null,
+                    errors = new { General = new[] { ex.Message } }
                 });
             }
         }

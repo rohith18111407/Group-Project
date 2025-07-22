@@ -99,4 +99,27 @@ export class AdminService {
     cancelScheduledUpload(id: string): Observable<any> {
         return this.http.delete(`${this.baseUrl}/files/scheduled/${id}`, { headers: this.getAuthHeaders() });
     }
+
+    // Trash Management Methods
+    getTrashedFiles(): Observable<any[]> {
+        return this.http.get<any>(`${this.baseUrl}/files/trash`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
+
+    restoreFromTrash(id: string): Observable<any> {
+        return this.http.post(`${this.baseUrl}/files/trash/${id}/restore`, {}, { headers: this.getAuthHeaders() });
+    }
+
+    permanentlyDeleteFromTrash(id: string): Observable<any> {
+        return this.http.delete(`${this.baseUrl}/files/trash/${id}/permanent`, { headers: this.getAuthHeaders() });
+    }
+
+    getTrashStats(): Observable<any> {
+        return this.http.get<any>(`${this.baseUrl}/files/trash/stats`, { headers: this.getAuthHeaders() })
+            .pipe(map(res => res.data));
+    }
+
+    forceCleanupTrash(): Observable<any> {
+        return this.http.post(`${this.baseUrl}/files/trash/cleanup`, {}, { headers: this.getAuthHeaders() });
+    }
 }
