@@ -63,11 +63,249 @@
   background-color: #0056b3;
 }
 
-
-/* Responsive tables */
+/* Table Alignment and Scrollable Functionality */
 .table-responsive {
-  width: 100%;
+  max-height: 500px;
+  max-width: 760px;
+  overflow-y: auto;
   overflow-x: auto;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+}
+
+.table th,
+.table td {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Make sure the sticky header works for files table specifically */
+.files-table th {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  border-bottom: 2px solid #dee2e6;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Column width optimization for files table */
+.files-table th:nth-child(1), .files-table td:nth-child(1) { /* Checkbox */
+  width: 40px;
+  text-align: center;
+}
+
+.files-table th:nth-child(2), .files-table td:nth-child(2) { /* File Name */
+  min-width: 200px;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.files-table th:nth-child(3), .files-table td:nth-child(3) { /* Item Name */
+  min-width: 150px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.files-table th:nth-child(4), .files-table td:nth-child(4) { /* Version */
+  width: 80px;
+  text-align: center;
+}
+
+.files-table th:nth-child(5), .files-table td:nth-child(5) { /* Size */
+  width: 100px;
+  text-align: right;
+}
+
+.files-table th:nth-child(6), .files-table td:nth-child(6) { /* Created By */
+  min-width: 120px;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.files-table th:nth-child(7), .files-table td:nth-child(7) { /* Created At */
+  width: 140px;
+}
+
+/* Sticky Actions Column for tables */
+.files-table th:last-child, .items-table th:last-child, .users-table th:last-child,
+.files-table td:last-child, .items-table td:last-child, .users-table td:last-child { /* Actions */
+  width: 100px;
+  text-align: center;
+  position: sticky;
+  right: 0;
+  background-color: white;
+  border-left: 1px solid #dee2e6;
+  z-index: 5;
+}
+
+/* Special handling for the sticky actions header to ensure it stays above everything */
+.files-table th:last-child, .items-table th:last-child, .users-table th:last-child {
+  z-index: 15; /* Higher than other headers to stay on top during scrolling */
+  background-color: #f8f9fa; /* Match header background */
+}
+
+/* Handle hover state for sticky actions column */
+.files-table tbody tr:hover td:last-child, .items-table tbody tr:hover td:last-child, .users-table tbody tr:hover td:last-child {
+  background-color: #f5f5f5;
+}
+
+/* Items Table Specific Styling */
+.items-table th:nth-child(1), .items-table td:nth-child(1) { /* Name */
+  min-width: 150px;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.items-table th:nth-child(2), .items-table td:nth-child(2) { /* Category */
+  min-width: 120px;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.items-table th:nth-child(3), .items-table td:nth-child(3) { /* Description */
+  min-width: 200px;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.items-table th:nth-child(4), .items-table td:nth-child(4) { /* Created At */
+  width: 140px;
+}
+
+.items-table th:nth-child(5), .items-table td:nth-child(5) { /* Created By */
+  min-width: 120px;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Users Table Specific Styling */
+.users-table th:nth-child(1), .users-table td:nth-child(1) { /* Username */
+  min-width: 120px;
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.users-table th:nth-child(2), .users-table td:nth-child(2) { /* Email */
+  min-width: 180px;
+  max-width: 250px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.users-table th:nth-child(3), .users-table td:nth-child(3) { /* Roles */
+  min-width: 100px;
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Category headers in files table */
+.category-header {
+  background-color: rgb(231, 242, 252);
+  color: #495057;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+  margin: 1rem 0 0.5rem 0;
+  border-left: 4px solid #0d6efd;
+  border-radius: 0.375rem;
+}
+
+/* Bulk Download Features */
+.bulk-actions-bar {
+  background-color: #e3f2fd;
+  border: 1px solid #bbdefb;
+  border-radius: 0.375rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.bulk-actions-bar .selected-count {
+  font-weight: 500;
+  color: #1976d2;
+  margin-right: auto;
+}
+
+.bulk-actions-bar .btn {
+  font-size: 0.875rem;
+}
+
+.select-all-section {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.select-all-section .form-check-label {
+  font-weight: 500;
+  margin-bottom: 0;
+}
+
+/* File selection checkboxes */
+.form-check-input {
+  margin-top: 0;
+  width: 18px;
+  height: 18px;
+  border-radius: 4px;
+  border: 2px solid #b0b0b0;
+  background-color: #fff;
+  appearance: none;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  position: relative;
+}
+
+.form-check-input:hover {
+  cursor: pointer;
+  transform: scale(1.05);
+}
+
+.form-check-input:checked {
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .table-responsive {
+    max-height: 400px;
+  }
+  
+  .bulk-actions-bar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  
+  .bulk-actions-bar .selected-count {
+    margin-right: 0;
+    text-align: center;
+  }
 }
 
 

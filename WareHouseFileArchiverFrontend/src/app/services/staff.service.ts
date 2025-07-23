@@ -45,4 +45,16 @@ export class StaffService {
         const url = `${this.baseUrl}/files/${filename}/v${version}`;
         return this.http.get(url, { headers: this.getAuthHeaders(), responseType: 'blob' });
     }
+
+    bulkDownloadFiles(fileIds: string[], zipFileName?: string): Observable<Blob> {
+        const request = {
+            fileIds: fileIds,
+            zipFileName: zipFileName || `ArchiveFiles_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}`
+        };
+
+        return this.http.post(`${this.baseUrl}/files/bulk-download`, request, {
+            headers: this.getAuthHeaders(),
+            responseType: 'blob'
+        });
+    }
 }

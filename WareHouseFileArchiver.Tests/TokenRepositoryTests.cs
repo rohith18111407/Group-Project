@@ -53,9 +53,10 @@ namespace WareHouseFileArchiver.Tests
         public void CreateJWTToken_ShouldReturnValidToken()
         {
             var roles = new List<string> { "Admin", "Staff" };
-            var token = _tokenRepository.CreateJWTToken(_testUser, roles);
+            var (token, expiry) = _tokenRepository.CreateJWTToken(_testUser, roles);
 
             Assert.That(token, Is.Not.Null.And.Not.Empty);
+            Assert.That(expiry, Is.GreaterThan(DateTime.UtcNow));
 
             var handler = new JwtSecurityTokenHandler();
             Assert.That(handler.CanReadToken(token), Is.True);
@@ -77,7 +78,7 @@ namespace WareHouseFileArchiver.Tests
         public void GetPrincipalFromExpiredToken_ShouldReturnClaimsPrincipal()
         {
             var roles = new List<string> { "Admin" };
-            var token = _tokenRepository.CreateJWTToken(_testUser, roles);
+            var (token, expiry) = _tokenRepository.CreateJWTToken(_testUser, roles);
 
             var principal = _tokenRepository.GetPrincipalFromExpiredToken(token);
 

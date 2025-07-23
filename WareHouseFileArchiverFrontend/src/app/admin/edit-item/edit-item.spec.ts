@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EditItem } from './edit-item';
+import { EditItemComponent as EditItem } from './edit-item';
 
 describe('EditItem', () => {
   let component: EditItem;

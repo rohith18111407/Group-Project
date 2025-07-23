@@ -1,0 +1,47 @@
+2025-07-23 21:05:08.008 +05:30 [INF] Executed DbCommand (1ms) [Parameters=[], CommandType='"Text"', CommandTimeout='30']
+SELECT a."Id", a."Category", a."CreatedAt", a."CreatedBy", a."DeletedAt", a."DeletedBy", a."Description", a."FileExtension", a."FileName", a."FilePath", a."FileSizeInBytes", a."IsDeleted", a."IsProcessed", a."IsScheduled", a."ItemId", a."OriginalFilePath", a."UpdatedAt", a."UpdatedBy", a."VersionNumber", i."Id", i."Category", i."CreatedAt", i."CreatedBy", i."Description", i."Name", i."UpdatedAt", i."UpdatedBy"
+FROM "ArchiveFiles" AS a
+LEFT JOIN "Items" AS i ON a."ItemId" = i."Id"
+WHERE a."IsScheduled" AND NOT (a."IsProcessed") AND a."CreatedAt" <= now()
+2025-07-23 21:05:16.515 +05:30 [INF] Application is shutting down...
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.569 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=_NNruqa89yWx7JbGoota8g - 101 null null 3195071.6094ms
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.568 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.569 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=BiwhGF0TOFBCO_t0tgCFhQ - 101 null null 3195087.8322ms
+2025-07-23 21:05:16.569 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=fATIvoBzFZNfmgsJE2JQ4g - 101 null null 3195070.2128ms
+2025-07-23 21:05:16.569 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=zn8Yx4tLeqayBTzz2AoLAA - 101 null null 3214916.0676ms
+2025-07-23 21:05:16.569 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=WB5iIdHiCeKeuhXTIKiXng - 101 null null 3195132.4693ms
+2025-07-23 21:05:16.569 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=vNLNPE3RxhTrWrDdgvXlXw - 101 null null 3195122.0294ms
+2025-07-23 21:05:16.569 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=CjIdpNNMGbB4Qa3E3kuQmw - 101 null null 3195121.9562ms
+2025-07-23 21:05:16.569 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=p7rsfAEKyQZjjM3N5azTVw - 101 null null 3195121.8582ms
+2025-07-23 21:05:16.569 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=6S3tvv9oTmXBSXDKAzciqg - 101 null null 3195071.4044ms
+2025-07-23 21:05:16.569 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=ocDphzkwf-LQ0o18teHsXQ - 101 null null 3195076.1692ms
+2025-07-23 21:05:16.569 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=Z3BORA6BxsC3MrIVpywNpA - 101 null null 3195088.397ms
+2025-07-23 21:05:16.570 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=7MGkKUETa3uBeStvgn2zOg - 101 null null 3195074.4296ms
+2025-07-23 21:05:16.570 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=JaC1BOK2cpC1PsAeOBZgUw - 101 null null 3195070.9629ms
+2025-07-23 21:05:16.570 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=hBo-ImLuqXXTmjuxZUjn1g - 101 null null 3195090.5351ms
+2025-07-23 21:05:16.571 +05:30 [INF] Executed endpoint '/notificationhub'
+2025-07-23 21:05:16.577 +05:30 [INF] Request finished HTTP/1.1 GET http://localhost:5239/notificationhub?id=tZ4ukMBEkkIfLcqxd4TUXw - 101 null null 3195096.4037ms
+2025-07-23 21:05:16.671 +05:30 [INF] Request starting HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null null
+2025-07-23 21:05:16.672 +05:30 [INF] CORS policy execution successful.
+2025-07-23 21:05:16.711 +05:30 [INF] Request finished HTTP/1.1 OPTIONS http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 204 null null 39.8717ms
+2025-07-23 21:05:16.731 +05:30 [INF] Request starting HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - null 0
+2025-07-23 21:05:16.731 +05:30 [INF] CORS policy execution successful.
+2025-07-23 21:05:16.732 +05:30 [INF] Executing endpoint '/notificationhub/negotiate'
+2025-07-23 21:05:16.737 +05:30 [INF] Executed endpoint '/notificationhub/negotiate'
+2025-07-23 21:05:16.737 +05:30 [INF] Request finished HTTP/1.1 POST http://localhost:5239/notificationhub/negotiate?negotiateVersion=1 - 200 316 application/json 7.1925ms
+2025-07-23 21:05:16.759 +05:30 [INF] Request starting HTTP/1.1 GET http://localhost:5239/notificationhub?id=CgHtJpM2I_LyL4AMDn7ORQ - null null
+2025-07-23 21:05:16.760 +05:30 [INF] CORS policy execution successful.
+2025-07-23 21:05:16.761 +05:30 [INF] Executing endpoint '/notificationhub'

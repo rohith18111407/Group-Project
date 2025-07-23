@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CenterContent } from './center-content';
+import { CenterContentComponent as CenterContent } from './center-content';
 
 describe('CenterContent', () => {
   let component: CenterContent;

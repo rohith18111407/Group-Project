@@ -35,6 +35,11 @@ export class StaffCenterContentComponent implements OnChanges {
   groupedFiles: { [category: string]: any[] } = {};
 
 
+  // Bulk selection properties
+  selectedFiles = new Set<string>();
+  showBulkActions = false;
+  allFilesSelected = false;
+
   constructor(private staffService: StaffService) { }
 
   ngOnChanges(): void {
@@ -215,6 +220,79 @@ export class StaffCenterContentComponent implements OnChanges {
       },
       error: () => {
         alert('Failed to download file.');
+      }
+    });
+  }
+
+  get totalFileCount(): number {
+    return this.files.length;
+  }
+
+  isFileSelected(fileId: string): boolean {
+    return this.selectedFiles.has(fileId);
+  }
+
+  toggleFileSelection(fileId: string, event: any): void {
+    if (event.target.checked) {
+      this.selectedFiles.add(fileId);
+    } else {
+      this.selectedFiles.delete(fileId);
+    }
+    this.updateBulkActionsVisibility();
+    this.updateSelectAllState();
+  }
+
+  selectAllFiles(event: any): void {
+    if (event.target.checked) {
+      // Select all files
+      this.files.forEach(file => this.selectedFiles.add(file.id));
+      this.allFilesSelected = true;
+    } else {
+      // Deselect all files
+      this.selectedFiles.clear();
+      this.allFilesSelected = false;
+    }
+    this.updateBulkActionsVisibility();
+  }
+
+  updateBulkActionsVisibility(): void {
+    this.showBulkActions = this.selectedFiles.size > 0;
+  }
+
+  updateSelectAllState(): void {
+    this.allFilesSelected = this.files.length > 0 && this.selectedFiles.size === this.files.length;
+  }
+
+  cancelBulkSelection(): void {
+    this.selectedFiles.clear();
+    this.showBulkActions = false;
+    this.allFilesSelected = false;
+  }
+
+  bulkDownloadFiles(): void {
+    if (this.selectedFiles.size === 0) {
+      alert('Please select files to download.');
+      return;
+    }
+
+    const selectedFileIds = Array.from(this.selectedFiles);
+    
+    this.staffService.bulkDownloadFiles(selectedFileIds).subscribe({
+      next: (blob: Blob) => {
+        const fileBlob = new Blob([blob], { type: 'application/zip' });
+        const url = window.URL.createObjectURL(fileBlob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `ArchiveFiles_${new Date().toISOString().slice(0, 19).replace(/:/g, '-')}.zip`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+
+        alert(`Successfully downloaded ${this.selectedFiles.size} files as ZIP.`);
+        this.cancelBulkSelection();
+      },
+      error: () => {
+        alert('Failed to download files. Please try again.');
       }
     });
   }
